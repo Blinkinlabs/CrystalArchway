@@ -107,6 +107,9 @@ MidiBus       myBus;
 void setup() {
   size(600, 350);
   frameRate(FRAMERATE);
+  
+  defineNodes();
+  defineEdges();
 
   enabledPatterns = new HashMap<String, Pattern>();
   
@@ -159,11 +162,8 @@ void setup() {
 
 }
 
-void draw() {
-  int segment;
-  
+void draw() {  
     background(0);
-
 
 //  if (leftProject && !activePatterns.contains(leftRailBitmap)) activePatterns.add(leftRailBitmap);
 //  if (rightProject && !activePatterns.contains(rightRailBitmap)) activePatterns.add(rightRailBitmap);
@@ -174,20 +174,17 @@ void draw() {
     println("on " + m.m_channel + " " + m.m_pitch);
     switch(m.m_channel) {
 
-//    case 0:  // Channel 1 in midi programs
-//      // Segments
-//      //        println("Adding rail segment pattern " + m.m_channel + " " + m.m_pitch + " " + m.m_velocity);
-//
-//      segment = m.m_pitch - 36;
-//
-//      // TODO: WTF, left rails are defined twice?
-//      if (segment >= 0 && segment < LeftRailSegments.size()) {
-//        layer2.add(new RailSegmentPattern(LeftRailSegments.get(segment), m.m_channel, m.m_pitch, m.m_velocity));
-//      }
-//      if (segment >= 0 && segment < RightRailSegments.size()) {
-//        layer2.add(new RailSegmentPattern(RightRailSegments.get(segment), m.m_channel, m.m_pitch, m.m_velocity));
-//      }
-//      break;
+    case 0:  // Channel 1 in midi programs
+      // Edges
+      //        println("Adding edge pattern " + m.m_channel + " " + m.m_pitch + " " + m.m_velocity);
+
+      int edge = m.m_pitch - 36;
+
+      // TODO: WTF, left rails are defined twice?
+      if (edge >= 0 && edge < Edges.size()) {
+        layer2.add(new EdgePattern(Edges.get(edge), m.m_channel, m.m_pitch, m.m_velocity));
+      }
+      break;
       
     case 1:  // Channel 2 in midi programs
       // Strips

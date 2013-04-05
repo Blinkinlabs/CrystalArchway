@@ -1,8 +1,8 @@
-class RailEdgePattern extends Pattern {
+class EdgePattern extends Pattern {
   Edge m_edge;
   
   
-  RailEdgePattern(Edge edge, int channel, int pitch, int velocity) {
+  EdgePattern(Edge edge, int channel, int pitch, int velocity) {
     super(channel, pitch, velocity);
     m_edge = edge;
   }
