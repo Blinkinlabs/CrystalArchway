@@ -40,33 +40,6 @@ long modeFrameStart;
 
 HashMap<String, Pattern> enabledPatterns;
 
-boolean leftProject = true;
-BitmapPattern leftRailBitmap;
-
-boolean rightProject = true;
-BitmapPattern rightRailBitmap;
-
-List<Segment> LeftRailSegments;
-Fixture leftRail;
-
-List<Segment> RightRailSegments;
-Fixture rightRail;
-
-Fixture combinedRails;
-BitmapPattern combinedBitmap;
-
-Fixture combinedTrapazoids;
-BitmapPattern combinedTrapBitmap;
-
-List<Segment> LeftTrapazoidSegments;
-Fixture leftTrapazoid;
-
-List<Segment> CenterTrapazoidSegments;
-Fixture centerTrapazoid;
-
-List<Segment> RightTrapazoidSegments;
-Fixture rightTrapazoid;
-
 int BOX0=0;
 int BOX1=8;
 int BOX2=16;
@@ -74,6 +47,10 @@ int BOX3=24;
 int BOX4=32;
 
 int strips = 40;
+
+List<Node> Nodes;
+List<Segment> Segments;
+Fixture tree;
 
 int rectX = 100;
 int rectY = 100;
@@ -128,7 +105,7 @@ MidiBus       myBus;
 
 
 void setup() {
-  size(1400, 350);
+  size(600, 350);
   frameRate(FRAMERATE);
 
   enabledPatterns = new HashMap<String, Pattern>();
@@ -191,25 +168,7 @@ void setup() {
   sign.setAddressingMode(LEDDisplay.ADDRESSING_HORIZONTAL_NORMAL);  
   sign.setEnableGammaCorrection(true);
 
-  myBus = new MidiBus(this, midiInputName, -1);  
-
-  defineLeftRail();   // Define the rail segments by where they are in pixel space
-  //leftRail = new Fixture(LeftRailSegments, new PVector(100, 0));
-
-   defineRightRail();
-   //rightRail = new Fixture(RightRailSegments, new PVector(750, 0));
-   combinedRails = new Fixture(LeftRailSegments, RightRailSegments, new PVector(100, 000));
-  
-
-  defineLeftTrapazoid();
-  defineCenterTrapazoid();
-  defineRightTrapazoid();
-
-  combinedTrapazoids = new Fixture(LeftTrapazoidSegments, CenterTrapazoidSegments, RightTrapazoidSegments, new PVector(250, 200));
-
-  
-  combinedBitmap = new BitmapPattern(combinedRails);
-  combinedTrapBitmap = new BitmapPattern(combinedTrapazoids);
+  myBus = new MidiBus(this, midiInputName, -1);
 
   modeFrameStart = frameCount;
 
@@ -230,25 +189,27 @@ void draw() {
     println("on " + m.m_channel + " " + m.m_pitch);
     switch(m.m_channel) {
       
+//    case 0:
+//      // Segments
+//      //        println("Adding rail segment pattern " + m.m_channel + " " + m.m_pitch + " " + m.m_velocity);
+//
+//      segment = m.m_pitch - 36;
+//
+//      // TODO: WTF, left rails are defined twice?
+//      if (segment >= 0 && segment < LeftRailSegments.size()) {
+//        layer2.add(new RailSegmentPattern(LeftRailSegments.get(segment), m.m_channel, m.m_pitch, m.m_velocity));
+//      }
+//      if (segment >= 0 && segment < RightRailSegments.size()) {
+//        layer2.add(new RailSegmentPattern(RightRailSegments.get(segment), m.m_channel, m.m_pitch, m.m_velocity));
+//      }
+//      break;
+      
     case 1:
       // Strips
       //        println("Adding line pattern " + m.m_channel + " " + m.m_pitch + " " + m.m_velocity);
       layer0.add(new LinePattern(m.m_channel, m.m_pitch, m.m_velocity));
       break;
-    case 0:
-      // Segments
-      //        println("Adding rail segment pattern " + m.m_channel + " " + m.m_pitch + " " + m.m_velocity);
-
-      segment = m.m_pitch - 36;
-
-      // TODO: WTF, left rails are defined twice?
-      if (segment >= 0 && segment < LeftRailSegments.size()) {
-        layer2.add(new RailSegmentPattern(LeftRailSegments.get(segment), m.m_channel, m.m_pitch, m.m_velocity));
-      }
-      if (segment >= 0 && segment < RightRailSegments.size()) {
-        layer2.add(new RailSegmentPattern(RightRailSegments.get(segment), m.m_channel, m.m_pitch, m.m_velocity));
-      }
-      break;
+      
     case 4:
               println("Adding flashes " + m.m_channel + " " + m.m_pitch + " " + m.m_velocity);
 
@@ -275,7 +236,7 @@ void draw() {
       // What ever isn't mapped uses the brightness pattern
     default:
       layer2.add(
-      new RailSegmentBrightnessPattern(
+      new SegmentBrightnessPattern(
       m.m_channel, m.m_pitch, m.m_velocity
         )
         );
@@ -337,9 +298,6 @@ void draw() {
   for (Pattern p1 : layer1) {
     p1.draw(); 
   }
-  
-  combinedBitmap.draw();
-  combinedTrapBitmap.draw();
    
   for (Pattern p2 : layer2) {
     p2.draw();  

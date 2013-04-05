@@ -9,7 +9,7 @@ class BitmapPattern extends Pattern {
   
   
   void draw() {
-    fixture.project();    
+//    fixture.project();    
   }
 }
 
