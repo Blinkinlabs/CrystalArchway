@@ -28,7 +28,6 @@ String midiInputName = "IAC Bus 1";
 
 long modeFrameStart;
 
-
 //Pattern[] enabledRoutines = new Pattern[] {
 //  new Bursts(), 
 //  new RGBRoutine(), 
@@ -40,6 +39,11 @@ long modeFrameStart;
 
 HashMap<String, Pattern> enabledPatterns;
 
+
+List<Node> Nodes;
+List<Edge> Edges;
+Fixture tree;
+
 int BOX0=0;
 int BOX1=8;
 int BOX2=16;
@@ -47,10 +51,6 @@ int BOX3=24;
 int BOX4=32;
 
 int strips = 40;
-
-List<Node> Nodes;
-List<Segment> Segments;
-Fixture tree;
 
 int rectX = 100;
 int rectY = 100;
@@ -109,26 +109,11 @@ void setup() {
   frameRate(FRAMERATE);
 
   enabledPatterns = new HashMap<String, Pattern>();
-
-  Bursts bursts = new Bursts();
-  bursts.m_channel = 9;
-  bursts.m_pitch = 24;
-  enabledPatterns.put("Bursts", bursts);
   
   RGBRoutine rgb = new RGBRoutine();
   rgb.m_channel = 9;
   rgb.m_pitch = 25;
   enabledPatterns.put("RGB", rgb);
-  
-  ColorDrop cd = new ColorDrop();
-  cd.m_channel = 9;
-  cd.m_pitch = 26;
-  enabledPatterns.put("ColorDrop", cd);
-  
-  WarpSpeedMrSulu ws = new WarpSpeedMrSulu();
-  ws.m_channel = 9;
-  ws.m_pitch = 27;
-  enabledPatterns.put("WarpSpeed", ws);
 
   GridRoutine gr = new GridRoutine();
   gr.m_channel = 9;
@@ -168,7 +153,7 @@ void setup() {
   sign.setAddressingMode(LEDDisplay.ADDRESSING_HORIZONTAL_NORMAL);  
   sign.setEnableGammaCorrection(true);
 
-  myBus = new MidiBus(this, midiInputName, -1);
+  myBus = new MidiBus(this, midiInputName, -1);  
 
   modeFrameStart = frameCount;
 
@@ -189,6 +174,11 @@ void draw() {
     println("on " + m.m_channel + " " + m.m_pitch);
     switch(m.m_channel) {
       
+    case 1:
+      // Strips
+      //        println("Adding line pattern " + m.m_channel + " " + m.m_pitch + " " + m.m_velocity);
+      layer0.add(new LinePattern(m.m_channel, m.m_pitch, m.m_velocity));
+      break;
 //    case 0:
 //      // Segments
 //      //        println("Adding rail segment pattern " + m.m_channel + " " + m.m_pitch + " " + m.m_velocity);
@@ -203,13 +193,6 @@ void draw() {
 //        layer2.add(new RailSegmentPattern(RightRailSegments.get(segment), m.m_channel, m.m_pitch, m.m_velocity));
 //      }
 //      break;
-      
-    case 1:
-      // Strips
-      //        println("Adding line pattern " + m.m_channel + " " + m.m_pitch + " " + m.m_velocity);
-      layer0.add(new LinePattern(m.m_channel, m.m_pitch, m.m_velocity));
-      break;
-      
     case 4:
               println("Adding flashes " + m.m_channel + " " + m.m_pitch + " " + m.m_velocity);
 
@@ -234,14 +217,13 @@ void draw() {
       break;
 
       // What ever isn't mapped uses the brightness pattern
-    default:
-      layer2.add(
-      new SegmentBrightnessPattern(
-      m.m_channel, m.m_pitch, m.m_velocity
-        )
-        );
-
-      break;
+//    default:
+//      layer2.add(
+//      new RailSegmentBrightnessPattern(
+//      m.m_channel, m.m_pitch, m.m_velocity
+//        )
+//        );
+//      break;
     }
   }
   

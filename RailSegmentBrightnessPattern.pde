@@ -1,15 +1,15 @@
-class SegmentBrightnessPattern extends Pattern {
-  Segment m_segment = null;
+class EdgeBrightnessPattern extends Pattern {
+  Edge m_edge = null;
   color m_color;
 
-  SegmentBrightnessPattern(int channel, int pitch, int velocity) {
+  EdgeBrightnessPattern(int channel, int pitch, int velocity) {
     super(channel, pitch, velocity);
     
     color basecolor;
     float ratio;
     
-    if (pitch >= 36 && pitch-36 < Segments.size()) {
-      m_segment = Segments.get(pitch-36);
+    if (pitch >= 36 && pitch-36 < Edges.size()) {
+      m_edge = Edges.get(pitch-36);
       
       ratio = (velocity/127.0);
       basecolor = channelColors[channel];
@@ -38,8 +38,8 @@ class SegmentBrightnessPattern extends Pattern {
   }
   
   void draw() {
-    if (m_segment != null) {
-      m_segment.draw(m_color);    
+    if (m_edge != null) {
+      m_edge.draw(m_color);    
     }
   }
 }

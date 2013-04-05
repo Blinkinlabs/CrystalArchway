@@ -1,16 +1,14 @@
 class Fixture {
 
-  public List<Segment> m_segments;
+  public List<Edge> m_edges;
   
-  Fixture(List<Segment> segments) {
-    m_segments = segments;
-    
-    for (Segment seg : segments);
+  Fixture(List<Edge> edges) {
+    m_edges = edges;
   }
   
   void draw() {
-    for (Segment segment : m_segments) { 
-      segment.draw();
+    for (Edge edge : m_edges) { 
+      edge.draw();
     }
   }
 }

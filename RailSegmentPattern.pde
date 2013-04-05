@@ -1,10 +1,10 @@
-class RailSegmentPattern extends Pattern {
-  Segment m_segment;
+class RailEdgePattern extends Pattern {
+  Edge m_edge;
   
   
-  RailSegmentPattern(Segment segment, int channel, int pitch, int velocity) {
+  RailEdgePattern(Edge edge, int channel, int pitch, int velocity) {
     super(channel, pitch, velocity);
-    m_segment = segment;
+    m_edge = edge;
   }
   
   
@@ -23,7 +23,7 @@ class RailSegmentPattern extends Pattern {
 
     c = color(random(100,255), random(100, 255), random(100, 255));
     
-    m_segment.draw(c);
+    m_edge.draw(c);
   }
 }
 
