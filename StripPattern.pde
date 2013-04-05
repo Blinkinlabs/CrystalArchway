@@ -1,9 +1,8 @@
-class LinePattern extends Pattern {
+class StripPattern extends Pattern {
   
-  LinePattern(int channel, int pitch, int velocity) {
+  StripPattern(int channel, int pitch, int velocity) {
     super(channel, pitch, velocity);
   }
-  
   
   void draw() {
     // Display one flash of color, then end.

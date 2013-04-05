@@ -32,10 +32,10 @@ class FlashPattern extends Pattern {
     
     if((m_pitch - 24) >= 0 && (m_pitch - 24) < flashColors.length) {
       pushStyle();
-      fill(flashColors[m_pitch - 24]);
-      //fill(100,100,100);
-      //rect(0,0,40,160);
-      rect(41, 0, 800, height);
+        fill(flashColors[m_pitch - 24]);
+        //fill(100,100,100);
+        //rect(0,0,40,160);
+        rect(0, 0, displayWidth, displayHeight);
       popStyle();
     }
   }

@@ -173,13 +173,8 @@ void draw() {
     MidiMessage m = noteOnMessages.poll();
     println("on " + m.m_channel + " " + m.m_pitch);
     switch(m.m_channel) {
-      
-    case 1:
-      // Strips
-      //        println("Adding line pattern " + m.m_channel + " " + m.m_pitch + " " + m.m_velocity);
-      layer0.add(new LinePattern(m.m_channel, m.m_pitch, m.m_velocity));
-      break;
-//    case 0:
+
+//    case 0:  // Channel 1 in midi programs
 //      // Segments
 //      //        println("Adding rail segment pattern " + m.m_channel + " " + m.m_pitch + " " + m.m_velocity);
 //
@@ -193,18 +188,20 @@ void draw() {
 //        layer2.add(new RailSegmentPattern(RightRailSegments.get(segment), m.m_channel, m.m_pitch, m.m_velocity));
 //      }
 //      break;
-    case 4:
+      
+    case 1:  // Channel 2 in midi programs
+      // Strips
+      //        println("Adding line pattern " + m.m_channel + " " + m.m_pitch + " " + m.m_velocity);
+      layer0.add(new StripPattern(m.m_channel, m.m_pitch, m.m_velocity));
+      break;
+
+    case 4:  // Channel 5 in midi programs
               println("Adding flashes " + m.m_channel + " " + m.m_pitch + " " + m.m_velocity);
 
       // Flashes
       layer0.add(new FlashPattern(m.m_channel, m.m_pitch, m.m_velocity));
       break;
-      
-    case 5:
-              println("Adding flash boxes " + m.m_channel + " " + m.m_pitch + " " + m.m_velocity);
-      // Flashes
-      layer0.add(new FlashBoxPattern(m.m_channel, m.m_pitch, m.m_velocity));
-      break;
+
     case 9:
       
       for (Map.Entry p : enabledPatterns.entrySet()) {
