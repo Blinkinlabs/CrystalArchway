@@ -14,7 +14,7 @@ class RGBRoutine extends Pattern {
         
         stroke(r,g,b);
         //point(,row);
-        rect(displayWidth + 1, row, rwidth, 3);
+        rect(0, row, rwidth, 3);
       //}
     }
     

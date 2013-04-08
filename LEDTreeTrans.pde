@@ -28,14 +28,14 @@ String midiInputName = "IAC Bus 1";
 
 long modeFrameStart;
 
-//Pattern[] enabledRoutines = new Pattern[] {
+Pattern[] enabledRoutines = new Pattern[] {
 //  new Bursts(), 
 //  new RGBRoutine(), 
 //  new ColorDrop(), 
-//  new WarpSpeedMrSulu()
+  new WarpSpeedMrSulu()
 //
 //    //new RainbowColors(), // Doesn't work at this scale
-//  };
+};
 
 HashMap<String, Pattern> enabledPatterns;
 
@@ -128,6 +128,12 @@ void setup() {
   bt.m_pitch = 29;
   enabledPatterns.put("BouncyThings", bt);
 
+  Warp warp = new Warp(new WarpSpeedMrSulu(), false, true, 0.5, 0.5);
+  warp.m_channel = 9;
+  warp.m_pitch = 30;
+  enabledPatterns.put("Warp", warp);
+
+
   for (Map.Entry r : enabledPatterns.entrySet()) {
     Pattern pat = (Pattern) r.getValue();
     pat.setup(this);
@@ -205,7 +211,7 @@ void draw() {
         Pattern pat = (Pattern) p.getValue();
         if (pat.m_channel == m.m_channel && pat.m_pitch == m.m_pitch && !layer1.contains(pat)) {
           println("Adding " + pat);
-          layer1.add(pat);
+          layer0.add(pat);
         }
       }
       break;
