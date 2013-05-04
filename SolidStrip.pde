@@ -1,11 +1,10 @@
-class StripPattern extends Pattern {
-  
-  StripPattern(int channel, int pitch, int velocity) {
+// Strip display pattern- light an entire LED strip with a solid color
+class SolidStrip extends Pattern {  
+  SolidStrip(int channel, int pitch, int velocity) {
     super(channel, pitch, velocity);
   }
   
   void draw() {
-    // Display one flash of color, then end.
     if(m_velocity < 60) {
       stroke(color(255,0,0));
     }

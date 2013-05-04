@@ -29,11 +29,11 @@ import hypermedia.net.*;
  **/
 
 public class LEDDisplay {
-  public static final int ADDRESSING_VERTICAL_NORMAL = 1;
-  public static final int ADDRESSING_VERTICAL_HALF = 2;
-  public static final int ADDRESSING_VERTICAL_FLIPFLOP = 3;
-  public static final int ADDRESSING_HORIZONTAL_NORMAL = 4;
-  public static final int ADDRESSING_HORIZONTAL_HALF = 5;
+  public static final int ADDRESSING_VERTICAL_NORMAL     = 1;
+  public static final int ADDRESSING_VERTICAL_HALF       = 2;
+  public static final int ADDRESSING_VERTICAL_FLIPFLOP   = 3;
+  public static final int ADDRESSING_HORIZONTAL_NORMAL   = 4;
+  public static final int ADDRESSING_HORIZONTAL_HALF     = 5;
   public static final int ADDRESSING_HORIZONTAL_FLIPFLOP = 6;
 
   PApplet parent;

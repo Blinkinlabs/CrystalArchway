@@ -1,5 +1,6 @@
+// Crazy-ass star pattern, draws onto a 2d display
 class Warp extends Pattern {
- float r;
+  float r;
   float rofs;
   float warpSpeed;
   Pattern subroutine;
