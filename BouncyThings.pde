@@ -3,7 +3,7 @@
 class BouncyThings extends Pattern {
   List<BouncyThing> bouncyThings;
   
-  void draw(PGraphics f) {
+  void paint(PGraphics f) {
     if(bouncyThings == null) {
       bouncyThings = new LinkedList<BouncyThing>();
       for(int i = 0; i < 30; i++) {
@@ -13,7 +13,7 @@ class BouncyThings extends Pattern {
     }
     
     for (BouncyThing bt : bouncyThings) {
-      bt.draw(f);
+      bt.paint(f);
     }
   }
 }
@@ -46,7 +46,7 @@ class BouncyThing extends Pattern {
     m_yVelocity = random(-m_maxVelocity, m_maxVelocity);
   }
   
-  void draw(PGraphics f) {
+  void paint(PGraphics f) {
     
     f.pushStyle();
       f.fill(m_c);

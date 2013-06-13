@@ -1,3 +1,7 @@
+import peasy.org.apache.commons.math.*;
+import peasy.*;
+import peasy.org.apache.commons.math.geometry.*;
+
 import themidibus.*;
 
 import processing.opengl.*;
@@ -26,6 +30,7 @@ HashMap<String, Pattern> availablePatterns;  // List of available patterns to dr
 
 List<Node> Nodes;  // Our geometry
 List<Edge> Edges;
+Fixture arch;
 
 int layerCount = 3;  // Number of animation layers we can draw to
 List<List<Pattern>> layers;
@@ -37,14 +42,34 @@ PGraphics     frame;    // Image frame that gets sent to the LED display
 LEDDisplay    display;  // Networked display output
 MidiBus       myBus;    // MIDI input
 
+PeasyCam pCamera;
+
 void setup() {
-  size(600, 350, P3D);
+  size(1024, 768, OPENGL);
+  colorMode(RGB, 255);
   frameRate(60);
+  
+  pCamera = new PeasyCam(this, 0, 1.2, 0, 4);
+  pCamera.setMinimumDistance(2);
+  pCamera.setMaximumDistance(10);
+  pCamera.setWheelScale(.5);
+
+//  pCamera.rotateX(-.1);
+  pCamera.rotateY(1.6);
+//  pCamera.rotateZ(3);
+  pCamera.rotateZ(3.14159);
+  
+  // Fix the front clipping plane
+  float fov = PI/3.0;
+  float cameraZ = (height/2.0) / tan(fov/2.0);
+  perspective(fov, float(width)/float(height), 
+            cameraZ/1000.0, cameraZ*10.0);
   
   frame = createGraphics(displayWidth, displayHeight, P3D);
   
   Nodes = defineNodes();
   Edges = defineEdges();
+  arch = new Fixture(Edges);
 
   availablePatterns = new HashMap<String, Pattern>();
   
@@ -95,9 +120,7 @@ void setup() {
   myBus = new MidiBus(this, midiInputName, -1);  
 }
 
-void draw() {  
-    background(0);
-
+void updatePatterns() {
   // Convert midi 'on' messages to new patterns
   while (noteOnMessages.size () > 0) {
     MidiMessage m = noteOnMessages.poll();
@@ -154,19 +177,46 @@ void draw() {
       l.clear();
     }
   }
+}
 
+void drawPatterns() {
   // For every layer, draw each pattern in the order 
   frame.beginDraw();
-  frame.background(032145);
+  frame.background(0);
   for(List<Pattern> l : layers) {
     for (Pattern p : l) {
       p.draw(frame);
     }
   }
   frame.endDraw();
-  image(frame, 0, 0);
+}
 
-  display.sendData();
+void draw() {
+  updatePatterns();
+
+  drawPatterns();
+
+  background(color(0,0,20));
+
+  // Draw the ground
+  drawGround();
+
+  // draw the same tree three times, later we should make 3 trees.
+//  for(int i = 0; i < 3; i++) {
+  int i = 0;
+    pushMatrix();
+      rotate(3.14159*2/3*i,0,1,0);
+      translate(-1.52,0,0);
+      rotate(-3.14159/6,0,1,0);
+      arch.draw();
+    popMatrix();
+//  }
+
+  // draw a hud
+  drawHud(frame);
+  
+  // Finally send the thing
+  display.sendData(frame);
 }
 
 
@@ -181,7 +231,6 @@ void noteOff(int channel, int pitch, int velocity) {
   //println("Off " + channel + " " + pitch + " " + velocity);
   noteOffMessages.add(new MidiMessage(channel, pitch, velocity));
 }
-
 
 // Inject patterns for now, since we don't have a MIDI interface maybe
 void keyPressed() {  

@@ -17,7 +17,7 @@ class Pattern {
   void reset() {
   }
   
-  void draw(PGraphics f) {
+  void paint(PGraphics f) {
   }
 
 }

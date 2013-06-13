@@ -7,9 +7,9 @@ class FlashingEdge extends Pattern {
     m_edge = edge;
   }
   
-  void draw(PGraphics f) {
+  void paint(PGraphics f) {
     color c = color(random(100,255), random(100, 255), random(100, 255));
-    m_edge.draw(f, c);
+    m_edge.paint(f, c);
   }
 }
 

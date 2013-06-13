@@ -27,7 +27,7 @@ class ScreenFlash extends Pattern {
     println("Flash pitch " + m_pitch);
   }
   
-  void draw(PGraphics f) {    
+  void paint(PGraphics f) {    
     int colorIndex = m_pitch - 36;
     if(colorIndex >= 0 && colorIndex < m_colors.length) {
       f.pushStyle();

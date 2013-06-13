@@ -10,7 +10,7 @@ class WarpSpeedMrSulu extends Pattern {
     }
   }
   
-  void draw(PGraphics f) {
+  void paint(PGraphics f) {
     f.background(0);
     f.stroke(255);
     
@@ -34,11 +34,11 @@ class WarpStar {
   float g;
   float b;
 
-  public WarpStar() {
+  WarpStar() {
     this.reset();
   }
 
-  public void reset() {
+  void reset() {
     x = int(random(0, displayWidth));
     y = int(random(0, -100));
 
@@ -54,7 +54,7 @@ class WarpStar {
 //    }
   }
 
-  public void draw(PGraphics f) {
+  void paint(PGraphics f) {
     x = x + vx;
     y = y + vy;
     //RGB 252/23/218 

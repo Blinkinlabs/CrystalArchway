@@ -6,7 +6,7 @@ class RainbowColors extends Pattern {
     m_frameStart = frameCount;
   }
   
-  void draw(PGraphics f) {
+  void paint(PGraphics f) {
     long frame = frameCount - m_frameStart;
     
     f.colorMode(HSB, 100);

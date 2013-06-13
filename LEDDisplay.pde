@@ -140,15 +140,9 @@ public class LEDDisplay {
     udp.send(modeBuffer, address, port);
   }
 
-  public void sendData() {
-    PImage image = get();
-
-    //    if (image.width != w || image.height != h) {
-    //      image.resize(w,h);
-    //    }
-
+  public void sendData(PGraphics f) {
+    PImage image = f.get();
     image.loadPixels();
-    loadPixels();
 
     int r;
     int g;
@@ -158,14 +152,19 @@ public class LEDDisplay {
       for (int x=0; x<w; x++) {
 
         if (isRGB) {
-          r = int(red(image.pixels[y*width+x]));
-          g = int(green(image.pixels[y*width+x]));
-          b = int(blue(image.pixels[y*width+x]));
+          r = int(red(image.pixels[y*w+x]));
+          g = int(green(image.pixels[y*w+x]));
+          b = int(blue(image.pixels[y*w+x]));
           
           if (enableGammaCorrection) {
             r = (int)(Math.pow(r/256.0,this.gammaValue)*256*bright);
             g = (int)(Math.pow(g/256.0,this.gammaValue)*256*bright);
             b = (int)(Math.pow(b/256.0,this.gammaValue)*256*bright);
+          }
+          else {
+            r = (int)(r*bright);
+            g = (int)(g*bright);
+            b = (int)(b*bright);
           }
           
           buffer[(getAddress(x, y)*3)+1] = byte(r);
@@ -183,7 +182,8 @@ public class LEDDisplay {
         }
       }
     }
-    updatePixels();
+    image.updatePixels();
+    
     udp.send(buffer, address, port);
   }
 }

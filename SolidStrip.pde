@@ -4,7 +4,7 @@ class SolidStrip extends Pattern {
     super(channel, pitch, velocity);
   }
   
-  void draw(PGraphics f) {
+  void paint(PGraphics f) {
     if(m_velocity < 60) {
       f.stroke(color(255,0,0));
     }
