@@ -10,19 +10,19 @@ class Stripes extends Pattern {
   int m_stripSeparation = 7;
   int m_lineWidth       = 2;
   
-  void draw() {
-    pushStyle();
-      noStroke();
-      fill(255);
+  void draw(PGraphics f) {
+    f.pushStyle();
+      f.noStroke();
+      f.fill(255);
       for (int col = (int)m_step; col < m_width; col+=m_stripSeparation) {
-        rect(m_x + col, m_y, m_lineWidth, m_height); 
+        f.rect(m_x + col, m_y, m_lineWidth, m_height); 
       }
 
 //      for (int col = (int)m_step; col < m_height; col+=m_stripSeparation) {
 //        rect(m_x, m_y + col, m_width, m_lineWidth); 
 //      }
 
-    popStyle();
+    f.popStyle();
 
     m_step = (m_step+m_stepSize)%m_stripSeparation;
   }

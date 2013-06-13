@@ -4,11 +4,13 @@ import processing.opengl.*;
 import hypermedia.net.*;
 import java.util.concurrent.*;
 
+import java.util.*;
+
 /////////// Configuration Options /////////////////////
 
 // Network configuration
 String transmit_address = "127.0.0.1";  // Default 127.0.0.1
-int transmit_port       = 58082;        // Default 58802
+int transmit_port       = 58082;        // Default 58802, simlator on +1
 
 // Display configuration
 int displayHeight = 160;                // 160 for full-height strips
@@ -19,73 +21,59 @@ String midiInputName = "IAC Bus 1";
 
 ///////////////////////////////////////////////////////
 
-long modeFrameStart;
 
-HashMap<String, Pattern> enabledPatterns;
+HashMap<String, Pattern> availablePatterns;  // List of available patterns to draw
 
-List<Node> Nodes;
+List<Node> Nodes;  // Our geometry
 List<Edge> Edges;
 
-int rectX = 100;
-int rectY = 100;
-
-
-class MidiMessage {
-  public int m_channel;
-  public int m_pitch;
-  public int m_velocity;
-
-  MidiMessage(int channel, int pitch, int velocity) {
-    m_channel = channel;
-    m_pitch = pitch;
-    m_velocity = velocity;
-  }
-}
-
-int layerCount = 3;
+int layerCount = 3;  // Number of animation layers we can draw to
 List<List<Pattern>> layers;
 
 LinkedBlockingQueue<MidiMessage> noteOnMessages;    // 'On' messages that we need to handle
 LinkedBlockingQueue<MidiMessage> noteOffMessages;   // 'Off' messages that we need to handle
 
-LEDDisplay    display;
-MidiBus       myBus;
+PGraphics     frame;    // Image frame that gets sent to the LED display
+LEDDisplay    display;  // Networked display output
+MidiBus       myBus;    // MIDI input
 
 void setup() {
-  size(600, 350);
-  frameRate(5);
+  size(600, 350, P3D);
+  frameRate(60);
   
-  defineNodes();
-  defineEdges();
+  frame = createGraphics(displayWidth, displayHeight, P3D);
+  
+  Nodes = defineNodes();
+  Edges = defineEdges();
 
-  enabledPatterns = new HashMap<String, Pattern>();
+  availablePatterns = new HashMap<String, Pattern>();
   
   RGBStripes rgb = new RGBStripes();
   rgb.m_channel = 3;
   rgb.m_pitch   = 36;
-  enabledPatterns.put("RGB", rgb);
+  availablePatterns.put("RGB", rgb);
 
   Stripes stripes = new Stripes();
   stripes.m_channel = 3;
   stripes.m_pitch   = 37;
-  enabledPatterns.put("Stripes", stripes);
+  availablePatterns.put("Stripes", stripes);
   
   BouncyThings bt = new BouncyThings();
   bt.m_channel = 3;
   bt.m_pitch   = 38;
-  enabledPatterns.put("BouncyThings", bt);
+  availablePatterns.put("BouncyThings", bt);
 
-  Warp warp = new Warp(new WarpSpeedMrSulu(), false, true, 0.5, 0.5);
+  WarpSpeedMrSulu warp = new WarpSpeedMrSulu();
   warp.m_channel = 3;
   warp.m_pitch   = 39;
-  enabledPatterns.put("Warp", warp);
+  availablePatterns.put("Warp", warp);
   
   RainbowColors rainbow = new RainbowColors();
   rainbow.m_channel = 3;
   rainbow.m_pitch   = 40;
-  enabledPatterns.put("Rainbow", rainbow);
+  availablePatterns.put("Rainbow", rainbow);
 
-  for (Map.Entry r : enabledPatterns.entrySet()) {
+  for (Map.Entry r : availablePatterns.entrySet()) {
     Pattern pat = (Pattern) r.getValue();
     pat.setup(this);
     pat.reset();
@@ -99,14 +87,12 @@ void setup() {
 
   display = new LEDDisplay(this, displayWidth, displayHeight, true, transmit_address, transmit_port);
   display.setAddressingMode(LEDDisplay.ADDRESSING_HORIZONTAL_NORMAL);  
-  display.setEnableGammaCorrection(false);
+  display.setEnableGammaCorrection(true);
 
   noteOnMessages = new LinkedBlockingQueue<MidiMessage>();
   noteOffMessages = new LinkedBlockingQueue<MidiMessage>();
 
   myBus = new MidiBus(this, midiInputName, -1);  
-
-  modeFrameStart = frameCount;
 }
 
 void draw() {  
@@ -134,7 +120,7 @@ void draw() {
       break;
 
     case 3: // Channel 4: enable patterns
-      for (Map.Entry p : enabledPatterns.entrySet()) {
+      for (Map.Entry p : availablePatterns.entrySet()) {
         Pattern pat = (Pattern) p.getValue();
         if (pat.m_channel == m.m_channel && pat.m_pitch == m.m_pitch && !layers.get(0).contains(pat)) {
           println("Adding " + pat);
@@ -161,22 +147,6 @@ void draw() {
     }
   }
   
-  pushStyle();
-    fill(255);
-    noStroke();
-    rect(rectX - 50, rectY - 50, 100, 100);
-    strokeWeight(1);
-    stroke(255);
-    line(displayWidth + 1, 0, displayWidth + 1, height);
-  popStyle();
-
-  // Actually draw the patterns
-  for(List<Pattern> l : layers) {
-    for (Pattern p0 : l) {
-      p0.draw();
-    }
-  }
-
   // 'Panic' button, clear all existing patterns
   if (keyPressed && key == 'c') {
     // clear everything
@@ -184,6 +154,17 @@ void draw() {
       l.clear();
     }
   }
+
+  // For every layer, draw each pattern in the order 
+  frame.beginDraw();
+  frame.background(032145);
+  for(List<Pattern> l : layers) {
+    for (Pattern p : l) {
+      p.draw(frame);
+    }
+  }
+  frame.endDraw();
+  image(frame, 0, 0);
 
   display.sendData();
 }
@@ -201,8 +182,11 @@ void noteOff(int channel, int pitch, int velocity) {
   noteOffMessages.add(new MidiMessage(channel, pitch, velocity));
 }
 
-void mouseMoved() {
-  rectX = mouseX;
-  rectY = mouseY;
-}
 
+// Inject patterns for now, since we don't have a MIDI interface maybe
+void keyPressed() {  
+  if (key >= '1' && key <= '9') {
+    // inject patterns so we have something to look at
+    noteOnMessages.add(new MidiMessage(3, key - '1' + 36, 0));
+  }
+}

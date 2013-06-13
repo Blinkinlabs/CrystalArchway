@@ -10,12 +10,12 @@ class WarpSpeedMrSulu extends Pattern {
     }
   }
   
-  void draw() {
-    background(0);
-    stroke(255);
+  void draw(PGraphics f) {
+    f.background(0);
+    f.stroke(255);
     
     for (int i=0; i<NUM_STARS; i++) {
-      warpstars[i].draw();
+      warpstars[i].draw(f);
     }
   }
 
@@ -54,7 +54,7 @@ class WarpStar {
 //    }
   }
 
-  public void draw() {
+  public void draw(PGraphics f) {
     x = x + vx;
     y = y + vy;
     //RGB 252/23/218 
@@ -72,17 +72,14 @@ class WarpStar {
     r = r*bright;
     g = g*bright;
     b = b*bright;
-
-    stroke(r, g, b);
-    point(x, y);
-
+    
     for (int i=0; i<len; i++) {
       float intensity = 255 >> i / 2;
       
-      fill(color(r*random(.8,1.3),g*random(.8,1.3),b*random(.8,1.3)));
-      stroke(color(r,g,b));
+      f.fill(color(r*random(.8,1.3),g*random(.8,1.3),b*random(.8,1.3)));
+      f.stroke(color(r,g,b));
       //stroke(intensity);
-      point(x, y - i);
+      f.point(x, y - i);
     }
 
     if (y > displayHeight) this.reset();

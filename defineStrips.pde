@@ -1,9 +1,7 @@
 //// Share this between the transmitter and simulator.
 
 
-
-
-void defineNodes() {
+List<Node> defineNodes() {
   // Given an iscocoles triangle with side length L=1, like this:
   //       a
   //      / \ 
@@ -43,65 +41,67 @@ void defineNodes() {
   Nodes.add(new Node(11,     0+offX,   2*D+offZ,     C-offY));  // layer 4 (note: faced from edge of layer 2-3 connection)
   Nodes.add(new Node(12,    -A+offX,   2*D+offZ,    -B-offY));
   Nodes.add(new Node(13,    -A+offX,   3*D+offZ,     B-offY));
-  
+ 
+  return Nodes; 
 }
 
-void defineEdges() {
-  int BOX0 = 0;  // Offsets for each control box
+List<Edge> defineEdges() {
+  int BOX3 = 0;
+  
   int BOX1 = 8;
   int BOX2 = 16;
-  int BOX3 = 24;
+  int BOX0 = 24;
   int BOX4 = 32;
   
   Edges = new LinkedList<Edge>();
-  Edges.add(new Edge(0, BOX0 + 0,   0,  0,  1));   // layer 0
-  Edges.add(new Edge(0, BOX0 + 0,  32,  1,  2));
-  Edges.add(new Edge(0, BOX0 + 0,  64,  2,  0));
-
-  Edges.add(new Edge(0, BOX0 + 0,  96,  0,  4));   // layer 0-1 connections
-  Edges.add(new Edge(0, BOX0 + 0, 128,  0,  5));
-  Edges.add(new Edge(0, BOX0 + 1,   0,  1,  5));
-  Edges.add(new Edge(0, BOX0 + 1,  32,  1,  3));
-  Edges.add(new Edge(0, BOX0 + 1,  64,  2,  3));
-  Edges.add(new Edge(0, BOX0 + 1,  96,  2,  4));
+//  Edges.add(new Edge(0, BOX3 + 0,   0,  0,  1));   // layer 0
+//  Edges.add(new Edge(0, BOX3 + 0,  32,  1,  2));
+//  Edges.add(new Edge(0, BOX3 + 0,  64,  2,  0));
+//
+//  Edges.add(new Edge(0, BOX3 + 0,  96,  0,  4));   // layer 0-1 connections
+//  Edges.add(new Edge(0, BOX3 + 0, 128,  0,  5));
+//  Edges.add(new Edge(0, BOX3 + 1,   0,  1,  5));
+//  Edges.add(new Edge(0, BOX3 + 1,  32,  1,  3));
+//  Edges.add(new Edge(0, BOX3 + 1,  64,  2,  3));
+//  Edges.add(new Edge(0, BOX3 + 1,  96,  2,  4));
   
-  Edges.add(new Edge(0, BOX0 + 1, 128,  3,  4));   // layer 1
-  Edges.add(new Edge(0, BOX0 + 2,   0,  4,  5));
-  Edges.add(new Edge(0, BOX0 + 2,  32,  5,  3));
+  Edges.add(new Edge(0, BOX3 + 1, 128,  3,  4));   // layer 1
+  Edges.add(new Edge(0, BOX3 + 2,   0,  4,  5));
+  Edges.add(new Edge(0, BOX3 + 2,  32,  5,  3));
 
-  Edges.add(new Edge(0, BOX0 + 2,  64,  3,  7));   // layer 1-2 connections
-  Edges.add(new Edge(0, BOX0 + 2,  96,  3,  8));
-  Edges.add(new Edge(0, BOX0 + 2, 128,  4,  8));
-  Edges.add(new Edge(0, BOX0 + 3,   0,  4,  6));
-  Edges.add(new Edge(0, BOX0 + 3,  32,  5,  6));
-  Edges.add(new Edge(0, BOX0 + 3,  64,  5,  7));
+  Edges.add(new Edge(0, BOX3 + 2,  64,  3,  7));   // layer 1-2 connections
+  Edges.add(new Edge(0, BOX3 + 2,  96,  3,  8));
+  Edges.add(new Edge(0, BOX3 + 2, 128,  4,  8));
+  Edges.add(new Edge(0, BOX3 + 3,   0,  4,  6));
+  Edges.add(new Edge(0, BOX3 + 3,  32,  5,  6));
+  Edges.add(new Edge(0, BOX3 + 3,  64,  5,  7));
 
-  Edges.add(new Edge(0, BOX0 + 3,  96,  6,  7));   // layer 2
-  Edges.add(new Edge(0, BOX0 + 3, 128,  7,  8));
-  Edges.add(new Edge(0, BOX0 + 4,   0,  8,  6));
+  Edges.add(new Edge(0, BOX3 + 3,  96,  6,  7));   // layer 2
+  Edges.add(new Edge(0, BOX3 + 3, 128,  7,  8));
+  Edges.add(new Edge(0, BOX3 + 4,   0,  8,  6));
   
-  Edges.add(new Edge(0, BOX0 + 4,  32,  6, 10));   // layer 2-3 connections
-//  Edges.add(new Edge(0, BOX0 + 7,  60,  6, 11));
-//  Edges.add(new Edge(0, BOX0 + 7,  26,  7, 11));
-  Edges.add(new Edge(0, BOX0 + 4,  64,  7,  9));
-  Edges.add(new Edge(0, BOX0 + 4,  96,  8,  9));
-  Edges.add(new Edge(0, BOX0 + 4, 128,  8, 10));
+  Edges.add(new Edge(0, BOX3 + 4,  32,  6, 10));   // layer 2-3 connections
+//  Edges.add(new Edge(0, BOX3 + 7,  60,  6, 11));
+//  Edges.add(new Edge(0, BOX3 + 7,  26,  7, 11));
+  Edges.add(new Edge(0, BOX3 + 4,  64,  7,  9));
+  Edges.add(new Edge(0, BOX3 + 4,  96,  8,  9));
+  Edges.add(new Edge(0, BOX3 + 4, 128,  8, 10));
 
-  Edges.add(new Edge(0, BOX0 + 5,   0,  9, 10));   // layer 3 (note:truncated)
-//  Edges.add(new Edge(0, BOX0 + 7,  26, 10, 11));
-//  Edges.add(new Edge(0, BOX0 + 7,  26, 11,  9));
+  Edges.add(new Edge(0, BOX3 + 5,   0,  9, 10));   // layer 3 (note:truncated)
+//  Edges.add(new Edge(0, BOX3 + 7,  26, 10, 11));
+//  Edges.add(new Edge(0, BOX3 + 7,  26, 11,  9));
 
-  Edges.add(new Edge(0, BOX0 + 5,  32,  9, 12));   // layer 2/3-4 connections
-  Edges.add(new Edge(0, BOX0 + 5,  64,  9, 13));
-  Edges.add(new Edge(0, BOX0 + 5,  96, 10, 13));
-  Edges.add(new Edge(0, BOX0 + 5, 128, 10, 11));
-  Edges.add(new Edge(0, BOX0 + 6,   0,  8, 11));
-  Edges.add(new Edge(0, BOX0 + 6,  32,  8, 12));
+  Edges.add(new Edge(0, BOX3 + 5,  32,  9, 12));   // layer 2/3-4 connections
+  Edges.add(new Edge(0, BOX3 + 5,  64,  9, 13));
+  Edges.add(new Edge(0, BOX3 + 5,  96, 10, 13));
+  Edges.add(new Edge(0, BOX3 + 5, 128, 10, 11));
+  Edges.add(new Edge(0, BOX3 + 6,   0,  8, 11));
+  Edges.add(new Edge(0, BOX3 + 6,  32,  8, 12));
 
-  Edges.add(new Edge(0, BOX0 + 6,  64, 11, 12));   // layer 4
-  Edges.add(new Edge(0, BOX0 + 6,  96, 12, 13));
-  Edges.add(new Edge(0, BOX0 + 6, 128, 13, 11));
+  Edges.add(new Edge(0, BOX3 + 6,  64, 11, 12));   // layer 4
+  Edges.add(new Edge(0, BOX3 + 6,  96, 12, 13));
+  Edges.add(new Edge(0, BOX3 + 6, 128, 13, 11));
   
-  println(Edges.size());
+  return Edges;
 }
 

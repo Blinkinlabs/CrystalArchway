@@ -17,13 +17,13 @@ class Edge {
     m_name = name;
     m_strip = strip;
     m_offset = offset;
-    m_length = 32;  // For simplicity
+    m_length = 31;  // For simplicity
     m_startNode = startNode;
     m_endNode = endNode;
   }
 
   // Paint a solid color along the whole edge
-  void draw(color c) {
+  void draw(PGraphics f, color c) {
     stroke(c);
     line(m_strip, m_offset, m_strip, m_offset + m_length);
   }
