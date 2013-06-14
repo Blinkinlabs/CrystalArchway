@@ -103,32 +103,32 @@ List<Edge> defineEdges() {
 //  Edges.add(new Edge(0, BOX3 + 6, 128, 13, 11));
   
 // Start of edge defines
-  Edges.add(new Edge(   0,   6, 102,   3,   4));
-  Edges.add(new Edge(   0,   2,  33,   4,   5));
-  Edges.add(new Edge(   0,   1,  33,   5,   3));
-  Edges.add(new Edge(   0,   6,  68,   3,   7));
-  Edges.add(new Edge(   0,   1,   0,   3,   8));
-  Edges.add(new Edge(   0,   2,   0,   4,   8));
-  Edges.add(new Edge(   0,   6,   0,   4,   6));
-  Edges.add(new Edge(   0,   1,  68,   5,   6));
-  Edges.add(new Edge(   0,   2,  68,   5,   7));
-  Edges.add(new Edge(   0,   6,  34,   6,   7));
-  Edges.add(new Edge(   0,   7, 133,   7,   8));
-  Edges.add(new Edge(   0,   8, 138,   8,   6));
-  Edges.add(new Edge(   0,   1, 102,   6,  10));
-  Edges.add(new Edge(   0,   2, 101,   7,   9));
-  Edges.add(new Edge(   0,   8, 103,   8,   9));
-  Edges.add(new Edge(   0,   7,   0,   8,  10));
-  Edges.add(new Edge(   0,   5, 101,   9,  10));
-  Edges.add(new Edge(   0,   5,  67,   9,  12));
-  Edges.add(new Edge(   0,   8,  67,   9,  13));
-  Edges.add(new Edge(   0,   7,  33,  10,  13));
-  Edges.add(new Edge(   0,   5,   0,  10,  11));
-  Edges.add(new Edge(   0,   8,   0,   8,  11));
-  Edges.add(new Edge(   0,   7, 100,   8,  12));
-  Edges.add(new Edge(   0,   5,  34,  11,  12));
-  Edges.add(new Edge(   0,   7,  66,  12,  13));
-  Edges.add(new Edge(   0,   8,  34,  13,  11));
+  Edges.add(new Edge(   0,   5, 102, false,   3,   4));
+  Edges.add(new Edge(   0,   1,  33, false,   4,   5));
+  Edges.add(new Edge(   0,   0,  33,  true,   5,   3));
+  Edges.add(new Edge(   0,   5,  68,  true,   3,   7));
+  Edges.add(new Edge(   0,   0,   0,  true,   3,   8));
+  Edges.add(new Edge(   0,   1,   0,  true,   4,   8));
+  Edges.add(new Edge(   0,   5,   0, false,   4,   6));
+  Edges.add(new Edge(   0,   0,  68, false,   5,   6));
+  Edges.add(new Edge(   0,   1,  68, false,   5,   7));
+  Edges.add(new Edge(   0,   5,  34, false,   6,   7));
+  Edges.add(new Edge(   0,   6, 133,  true,   7,   8));
+  Edges.add(new Edge(   0,   7, 138, false,   8,   6));
+  Edges.add(new Edge(   0,   0, 102, false,   6,  10));
+  Edges.add(new Edge(   0,   1, 101, false,   7,   9));
+  Edges.add(new Edge(   0,   7, 103,  true,   8,   9));
+  Edges.add(new Edge(   0,   6,   0, false,   8,  10));
+  Edges.add(new Edge(   0,   4, 101, false,   9,  10));
+  Edges.add(new Edge(   0,   4,  67,  true,   9,  12));
+  Edges.add(new Edge(   0,   7,  67,  true,   9,  13));
+  Edges.add(new Edge(   0,   6,  33, false,  10,  13));
+  Edges.add(new Edge(   0,   4,   0, false,  10,  11));
+  Edges.add(new Edge(   0,   7,   0, false,   8,  11));
+  Edges.add(new Edge(   0,   6, 100,  true,   8,  12));
+  Edges.add(new Edge(   0,   4,  34, false,  11,  12));
+  Edges.add(new Edge(   0,   6,  66,  true,  12,  13));
+  Edges.add(new Edge(   0,   7,  34,  true,  13,  11));
 // End of edge defines
   
   return Edges;

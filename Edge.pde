@@ -1,13 +1,17 @@
 class Edge {
-  public int m_strip;
-  public int m_offset;
-  public int m_length;
+  // Mapping into the strip image array
+  int m_strip;
+  int m_offset;
+  int m_length;
+  boolean m_flipped;
 
-  public int m_name;
-  public int m_startNode;
-  public int m_endNode;
+  // mapping into the graph array
+  int m_name;
+  int m_startNode;
+  int m_endNode;
   
-  public color[] m_pixels;
+  
+  color[] m_pixels;
 
   // For LED Tree edges
   // @param name Name of the edge
@@ -15,10 +19,11 @@ class Edge {
   // @param offset 
   // @param startNode Node that the edge starts at
   // @param endNode Node that the edge ends at
-  Edge(int name, int strip, int offset, int startNode, int endNode) {
+  Edge(int name, int strip, int offset, boolean flipped, int startNode, int endNode) {
     m_name = name;
     m_strip = strip;
     m_offset = offset;
+    m_flipped = flipped;
     m_length = 31;  // For simplicity
     m_startNode = startNode;
     m_endNode = endNode;
@@ -47,14 +52,17 @@ class Edge {
   
   // Draw a dot at a single pixel position
   void paint(PGraphics f, int position, color c) {
-    m_pixels[position] = c;
+    m_pixels[position] = c; 
+    if(m_flipped) {
+      position = m_length - 1 - position;
+    }
     
-    f.pushStyle();
-      f.stroke(c);
-      f.strokeWeight(1.01);
-      f.noSmooth();
-      f.point(m_strip, m_offset + position);
-    f.popStyle();
+//    f.pushStyle();
+//      f.stroke(c);
+//      f.strokeWeight(2); //tfh?
+//      f.noSmooth();
+      f.set(m_strip, m_offset + position, c);
+//    f.popStyle();   
   }
   
   
@@ -84,8 +92,8 @@ class Edge {
   }
   
   void dumpConfig() {
-    System.out.printf("  Edges.add(new Edge( %3d, %3d, %3d, %3d, %3d));\n",
-                      m_name, m_strip, m_offset, m_startNode, m_endNode);
+    System.out.printf("  Edges.add(new Edge( %3d, %3d, %3d, %5b, %3d, %3d));\n",
+                      m_name, m_strip, m_offset, m_flipped, m_startNode, m_endNode);
 
   }
 }

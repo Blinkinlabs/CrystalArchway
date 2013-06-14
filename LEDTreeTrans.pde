@@ -264,7 +264,9 @@ void keyPressed() {
       edges.get(currentEdge).m_strip += 1;
     }
   }
-  
+  if (key == '/') {
+    edges.get(currentEdge).m_flipped = !edges.get(currentEdge).m_flipped;
+  }
   if (key == '+' || key == '=') {
     if(currentEdge >= 0) {
       edges.get(currentEdge).paint(frame, color(0,0,0));
