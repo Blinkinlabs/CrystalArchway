@@ -23,41 +23,48 @@ class Edge {
     m_startNode = startNode;
     m_endNode = endNode;
     
-    m_pixels = new color[32];
+    m_pixels = new color[m_length];
   }
 
   // Paint a solid color along the whole edge
   void paint(PGraphics f, color c) {
     f.pushStyle();
+      // If we're calibrating, we want to paint gray first! how to make this without a hack?
+//      f.stroke(color(50));
+//      f.noSmooth();
+//      f.line(m_strip, 0, m_strip, displayHeight);
+
       f.stroke(c);
+      f.strokeWeight(1);
+      f.noSmooth();
       f.line(m_strip, m_offset, m_strip, m_offset + m_length);
     f.popStyle();
      
-    for(int i = 0; i < m_pixels.length; i++) {
+    for(int i = 0; i < m_length; i++) {
       m_pixels[i] = c;
     }
   }
   
   // Draw a dot at a single pixel position
-  void paint(PGraphics f, color c, int position) {
+  void paint(PGraphics f, int position, color c) {
     m_pixels[position] = c;
     
     f.pushStyle();
       f.stroke(c);
+      f.strokeWeight(1.01);
+      f.noSmooth();
       f.point(m_strip, m_offset + position);
     f.popStyle();
   }
   
   
-  
   void draw() {
-    //FIXXXXME!
     for (int i = 0; i < m_length; i++) { 
   
       // Calculate the location based on the end points
-      float x = Nodes.get(m_startNode).m_posX - (Nodes.get(m_startNode).m_posX - Nodes.get(m_endNode).m_posX)/m_length*i;
-      float y = Nodes.get(m_startNode).m_posY - (Nodes.get(m_startNode).m_posY - Nodes.get(m_endNode).m_posY)/m_length*i;
-      float z = Nodes.get(m_startNode).m_posZ - (Nodes.get(m_startNode).m_posZ - Nodes.get(m_endNode).m_posZ)/m_length*i;
+      float x = nodes.get(m_startNode).m_posX - (nodes.get(m_startNode).m_posX - nodes.get(m_endNode).m_posX)/m_length*i;
+      float y = nodes.get(m_startNode).m_posY - (nodes.get(m_startNode).m_posY - nodes.get(m_endNode).m_posY)/m_length*i;
+      float z = nodes.get(m_startNode).m_posZ - (nodes.get(m_startNode).m_posZ - nodes.get(m_endNode).m_posZ)/m_length*i;
       
       // set the color based on the image data
 //      color c = imageData[m_strip + (m_offset + i)*strips];
@@ -74,6 +81,12 @@ class Edge {
 //        point(0,0);
       popMatrix();
     }
+  }
+  
+  void dumpConfig() {
+    System.out.printf("  Edges.add(new Edge( %3d, %3d, %3d, %3d, %3d));\n",
+                      m_name, m_strip, m_offset, m_startNode, m_endNode);
+
   }
 }
 

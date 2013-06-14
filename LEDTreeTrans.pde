@@ -28,9 +28,11 @@ String midiInputName = "IAC Bus 1";
 
 HashMap<String, Pattern> availablePatterns;  // List of available patterns to draw
 
-List<Node> Nodes;  // Our geometry
-List<Edge> Edges;
+List<Node> nodes;  // Our geometry
+List<Edge> edges;
 Fixture arch;
+
+int currentEdge = -1;   // Node actively being configured
 
 int layerCount = 3;  // Number of animation layers we can draw to
 List<List<Pattern>> layers;
@@ -67,9 +69,9 @@ void setup() {
   
   frame = createGraphics(displayWidth, displayHeight, P3D);
   
-  Nodes = defineNodes();
-  Edges = defineEdges();
-  arch = new Fixture(Edges);
+  nodes = defineNodes();
+  edges = defineEdges();
+  arch = new Fixture(edges);
 
   availablePatterns = new HashMap<String, Pattern>();
   
@@ -129,13 +131,9 @@ void updatePatterns() {
 
     case 0:  // Channel 1: Light a single edge
       int edge = m.m_pitch - 36;
-      if (edge >= 0 && edge < Edges.size()) {
-        layers.get(2).add(new FlashingEdge(Edges.get(edge), m.m_channel, m.m_pitch, m.m_velocity));
+      if (edge >= 0 && edge < edges.size()) {
+        layers.get(2).add(new FlashingEdge(edges.get(edge), m.m_channel, m.m_pitch, m.m_velocity));
       }
-      break;
-      
-    case 1:  // Channel 2: Light entire LED strips
-      layers.get(0).add(new SolidStrip(m.m_channel, m.m_pitch, m.m_velocity));
       break;
 
     case 2:  // Channel 3: Flash a color over the whole display
@@ -176,16 +174,31 @@ void updatePatterns() {
     for(List<Pattern> l : layers) {
       l.clear();
     }
+    for(Edge e : edges) {
+      e.paint(frame, color(0,0,0));
+    }
   }
 }
 
-void drawPatterns() {
+void paintPatterns() {
   // For every layer, draw each pattern in the order 
   frame.beginDraw();
   frame.background(0);
   for(List<Pattern> l : layers) {
     for (Pattern p : l) {
-      p.draw(frame);
+      p.paint(frame);
+    }
+  }
+  
+  // If we're configuring it, paint the active pattern
+  if(currentEdge >= 0) {
+    for(int i = 0; i < edges.get(currentEdge).m_length; i++) {
+      if (i < 16) {
+        edges.get(currentEdge).paint(frame, i, color(255,0,255));
+      }
+      else {
+        edges.get(currentEdge).paint(frame, i, color(255,255,0));
+      }
     }
   }
   frame.endDraw();
@@ -193,10 +206,10 @@ void drawPatterns() {
 
 void draw() {
   updatePatterns();
+  paintPatterns();
 
-  drawPatterns();
-
-  background(color(0,0,20));
+//  background(color(0,0,20));
+  background(color(0,0,100));
 
   // Draw the ground
   drawGround();
@@ -234,8 +247,50 @@ void noteOff(int channel, int pitch, int velocity) {
 
 // Inject patterns for now, since we don't have a MIDI interface maybe
 void keyPressed() {  
+  if (key == CODED) {
+    if (keyCode == UP) {
+      edges.get(currentEdge).m_offset += 1;
+    }
+    if (keyCode == DOWN) {
+      // TODO: Make this not go over bounds?
+      edges.get(currentEdge).m_offset -= 1;
+    }
+    if (keyCode == LEFT) {
+      // TODO: Make this not go over bounds?
+      edges.get(currentEdge).m_strip -= 1;
+    }
+    if (keyCode == RIGHT) {
+      // TODO: Make this not go over bounds?
+      edges.get(currentEdge).m_strip += 1;
+    }
+  }
+  
+  if (key == '+' || key == '=') {
+    if(currentEdge >= 0) {
+      edges.get(currentEdge).paint(frame, color(0,0,0));
+    }
+
+    currentEdge = min(edges.size() - 1, currentEdge + 1);
+  }
+  if (key == '-') {
+    edges.get(currentEdge).paint(frame, color(0,0,0));
+    currentEdge = max(0, currentEdge - 1);
+  }
+  
   if (key >= '1' && key <= '9') {
     // inject patterns so we have something to look at
     noteOnMessages.add(new MidiMessage(3, key - '1' + 36, 0));
   }
+  if (key == 'd') {
+    //dump state
+    println("// Start of edge defines");
+    for(Edge e : edges) {
+      e.dumpConfig();
+    } 
+    println("// End of edge defines");
+  }
+//  if (key >= 'a' && key <= 'z') {
+//    // inject a strip pattern
+//    noteOnMessages.add(new MidiMessage(0, key - 'a' + 36, 0));
+//  }
 }

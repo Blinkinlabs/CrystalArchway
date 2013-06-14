@@ -15,11 +15,9 @@ class WarpSpeedMrSulu extends Pattern {
     f.stroke(255);
     
     for (int i=0; i<NUM_STARS; i++) {
-      warpstars[i].draw(f);
+      warpstars[i].paint(f);
     }
   }
-
-
 }
 
 
