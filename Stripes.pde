@@ -13,6 +13,7 @@ class Stripes extends Pattern {
   void paint(PGraphics f) {
     f.pushStyle();
       f.noStroke();
+      f.noSmooth();
       f.fill(255);
       for (int col = (int)m_step; col < m_width; col+=m_stripSeparation) {
         f.rect(m_x + col, m_y, m_lineWidth, m_height); 

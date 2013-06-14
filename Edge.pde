@@ -91,6 +91,14 @@ class Edge {
     }
   }
   
+  PVector getPixelCoordinates(int position) {
+    float x = nodes.get(m_startNode).m_posX - (nodes.get(m_startNode).m_posX - nodes.get(m_endNode).m_posX)/m_length*position;
+    float y = nodes.get(m_startNode).m_posY - (nodes.get(m_startNode).m_posY - nodes.get(m_endNode).m_posY)/m_length*position;
+    float z = nodes.get(m_startNode).m_posZ - (nodes.get(m_startNode).m_posZ - nodes.get(m_endNode).m_posZ)/m_length*position;
+    
+    return new PVector(x,y,z);
+  }
+  
   void dumpConfig() {
     System.out.printf("  Edges.add(new Edge( %3d, %3d, %3d, %5b, %3d, %3d));\n",
                       m_name, m_strip, m_offset, m_flipped, m_startNode, m_endNode);

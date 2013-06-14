@@ -24,7 +24,7 @@ float bright = 1;                       // Global brightness modifier
 String midiInputName = "IAC Bus 1";
 
 ///////////////////////////////////////////////////////
-
+float brightnessPhase;
 
 HashMap<String, Pattern> availablePatterns;  // List of available patterns to draw
 
@@ -135,9 +135,16 @@ void updatePatterns() {
         layers.get(2).add(new FlashingEdge(edges.get(edge), m.m_channel, m.m_pitch, m.m_velocity));
       }
       break;
+    
+    case 1: // Channel 2: light a node
+      int node = m.m_pitch - 36;
+      if (node >= 0 && node < nodes.size()) {
+        layers.get(1).add(new PulsingNode(nodes.get(node), m.m_channel, m.m_pitch, m.m_velocity));
+      }
+      break;
 
-    case 2:  // Channel 3: Flash a color over the whole display
-      layers.get(0).add(new ScreenFlash(m.m_channel, m.m_pitch, m.m_velocity));
+    case 2: // Channel 3: Fuck yeah!
+      layers.get(0).add(new ThreeDFlood());
       break;
 
     case 3: // Channel 4: enable patterns
@@ -169,7 +176,7 @@ void updatePatterns() {
   }
   
   // 'Panic' button, clear all existing patterns
-  if (keyPressed && key == 'c') {
+  if (keyPressed && key == 'C') {
     // clear everything
     for(List<Pattern> l : layers) {
       l.clear();
@@ -230,6 +237,11 @@ void draw() {
   
   // Finally send the thing
   display.sendData(frame);
+  
+  
+  bright = (sin(brightnessPhase) +1)/2;
+  brightnessPhase += .3;
+//  println(frameRate);
 }
 
 
@@ -283,7 +295,7 @@ void keyPressed() {
     // inject patterns so we have something to look at
     noteOnMessages.add(new MidiMessage(3, key - '1' + 36, 0));
   }
-  if (key == 'd') {
+  if (key == 'D') {
     //dump state
     println("// Start of edge defines");
     for(Edge e : edges) {
@@ -291,8 +303,11 @@ void keyPressed() {
     } 
     println("// End of edge defines");
   }
-//  if (key >= 'a' && key <= 'z') {
-//    // inject a strip pattern
-//    noteOnMessages.add(new MidiMessage(0, key - 'a' + 36, 0));
-//  }
+  if (key >= 'a' && key <= 'z') {
+    // inject a strip pattern
+    noteOnMessages.add(new MidiMessage(1, key - 'a' + 36, 0));
+  }
+  if (key == 'F') {
+    noteOnMessages.add(new MidiMessage(2, key - 'a' + 36, 0));
+  }
 }
