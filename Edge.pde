@@ -19,30 +19,26 @@ class Edge {
   // @param offset 
   // @param startNode Node that the edge starts at
   // @param endNode Node that the edge ends at
-  Edge(int name, int strip, int offset, boolean flipped, int startNode, int endNode) {
+  // @param number to add to the start and end nodes (for making repetitive structures)
+  Edge(int name, int strip, int offset, boolean flipped, int startNode, int endNode, int nodeOffset) {
     m_name = name;
     m_strip = strip;
     m_offset = offset;
     m_flipped = flipped;
     m_length = 31;  // For simplicity
-    m_startNode = startNode;
-    m_endNode = endNode;
+    m_startNode = startNode + nodeOffset;
+    m_endNode = endNode + nodeOffset;
     
     m_pixels = new color[m_length];
   }
 
   // Paint a solid color along the whole edge
-  void paint(PGraphics f, color c) {
+  void paint(PGraphics f, color c) {    
     f.pushStyle();
-      // If we're calibrating, we want to paint gray first! how to make this without a hack?
-//      f.stroke(color(50));
-//      f.noSmooth();
-//      f.line(m_strip, 0, m_strip, displayHeight);
-
       f.stroke(c);
       f.strokeWeight(1);
       f.noSmooth();
-      f.line(m_strip, m_offset, m_strip, m_offset + m_length);
+      f.line(m_strip+1, m_offset, m_strip+1, m_offset + m_length);
     f.popStyle();
      
     for(int i = 0; i < m_length; i++) {
@@ -56,10 +52,10 @@ class Edge {
     if(m_flipped) {
       position = m_length - 1 - position;
     }
-    
+   
 //    f.pushStyle();
 //      f.stroke(c);
-//      f.strokeWeight(2); //tfh?
+//      f.strokeWeight(2);
 //      f.noSmooth();
       f.set(m_strip, m_offset + position, c);
 //    f.popStyle();   
@@ -100,7 +96,7 @@ class Edge {
   }
   
   void dumpConfig() {
-    System.out.printf("  Edges.add(new Edge( %3d, %3d, %3d, %5b, %3d, %3d));\n",
+    System.out.printf("  Edges.add(new Edge( %3d, %3d, %3d, %5b, %3d, %3d,  0));\n",
                       m_name, m_strip, m_offset, m_flipped, m_startNode, m_endNode);
 
   }

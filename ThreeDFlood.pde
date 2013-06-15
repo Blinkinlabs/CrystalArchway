@@ -14,9 +14,10 @@ class ThreeDFlood extends Pattern {
     for( Edge e : edges) {
         for(int i = 0; i < e.m_length; i++) {
           PVector coords = e.getPixelCoordinates(i);
-            e.paint(f, i, color((sin(coords.x*3 + m_phase*2) + 1)*128,
-                                (sin(coords.y*3 + m_phase*3.2) + 1)*128,
-                                (sin(coords.z*3 + m_phase*4.3) + 1)*128));
+            e.paint(f, i, color((sin(coords.z*4 + m_phase*2) + 1)*128,0,(cos(coords.z*4 + m_phase*2) + 1)*128));
+            //e.paint(f, i, color((sin(coords.x*3 + m_phase*2) + 1)*128,
+                                //(sin(coords.y*3 + m_phase*3.2) + 1)*128,
+                                //(sin(coords.z*3 + m_phase*4.3) + 1)*128));
       }
       // Otherwise we're high and dry!
     }

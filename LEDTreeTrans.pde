@@ -176,7 +176,7 @@ void updatePatterns() {
   }
   
   // 'Panic' button, clear all existing patterns
-  if (keyPressed && key == 'C') {
+  if (keyPressed && key == '`') {
     // clear everything
     for(List<Pattern> l : layers) {
       l.clear();
@@ -199,6 +199,13 @@ void paintPatterns() {
   
   // If we're configuring it, paint the active pattern
   if(currentEdge >= 0) {
+    // Fill the current strip with a blue line
+    frame.pushStyle();
+      frame.stroke(color(0,0,255));
+      frame.noSmooth();
+      frame.line(edges.get(currentEdge).m_strip+1, 0, edges.get(currentEdge).m_strip+1, displayHeight);
+    frame.popStyle();
+    
     for(int i = 0; i < edges.get(currentEdge).m_length; i++) {
       if (i < 16) {
         edges.get(currentEdge).paint(frame, i, color(255,0,255));
@@ -220,17 +227,12 @@ void draw() {
 
   // Draw the ground
   drawGround();
-
-  // draw the same tree three times, later we should make 3 trees.
-//  for(int i = 0; i < 3; i++) {
-  int i = 0;
-    pushMatrix();
-      rotate(3.14159*2/3*i,0,1,0);
-      translate(-1.52,0,0);
-      rotate(-3.14159/6,0,1,0);
-      arch.draw();
-    popMatrix();
-//  }
+  
+  // Draw the tree
+//  pushMatrix();
+//    scale(-1, 1, 1);  //TODO: Hack because all the mapping got mirrored
+    arch.draw();
+//  popMatrix();
 
   // draw a hud
   drawHud(frame);
@@ -239,8 +241,8 @@ void draw() {
   display.sendData(frame);
   
   
-  bright = (sin(brightnessPhase) +1)/2;
-  brightnessPhase += .3;
+//  bright = (sin(brightnessPhase) +1)/2;
+//  brightnessPhase += .1;
 //  println(frameRate);
 }
 
@@ -295,7 +297,7 @@ void keyPressed() {
     // inject patterns so we have something to look at
     noteOnMessages.add(new MidiMessage(3, key - '1' + 36, 0));
   }
-  if (key == 'D') {
+  if (key == '.') {
     //dump state
     println("// Start of edge defines");
     for(Edge e : edges) {
@@ -307,7 +309,11 @@ void keyPressed() {
     // inject a strip pattern
     noteOnMessages.add(new MidiMessage(1, key - 'a' + 36, 0));
   }
-  if (key == 'F') {
+  if (key >= 'A' && key <= 'Z') {
+    // inject a strip pattern
+    noteOnMessages.add(new MidiMessage(1, key - 'A' + 36 + 26, 0));
+  }
+  if (key == ',') {  // sweet pattern
     noteOnMessages.add(new MidiMessage(2, key - 'a' + 36, 0));
   }
 }
