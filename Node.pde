@@ -29,4 +29,14 @@ class Node {
     m_posY = posY;
     m_posZ = posZ;
   }
+  
+  void draw() {
+    pushMatrix();
+      translate(m_posX, m_posY, m_posZ);
+      fill(255);
+      stroke(255);
+      strokeWeight(4);
+      point(0,0);
+    popMatrix();
+  }
 }

@@ -32,6 +32,8 @@ List<Node> nodes;  // Our geometry
 List<Edge> edges;
 Fixture arch;
 
+float displayRotation = 0; // For automatic display rotation
+
 int currentEdge = -1;   // Node actively being configured
 
 int layerCount = 3;  // Number of animation layers we can draw to
@@ -219,17 +221,24 @@ void paintPatterns() {
 }
 
 void draw() {
+  background(color(0,0,40));
+  for(Edge e : edges) {
+    e.paint(frame, color(0));
+  }
+  
   updatePatterns();
   paintPatterns();
-
-//  background(color(0,0,20));
-  background(color(0,0,100));
 
   // Draw the ground
   drawGround();
   
   // Draw the tree
   arch.draw();
+  
+  // Draw node names
+  for (Node node : nodes) { 
+    node.draw();
+  }
 
   // draw a hud
   drawHud(frame);
@@ -239,8 +248,10 @@ void draw() {
   
   
 //  bright = (sin(brightnessPhase) +1)/2;
-//  brightnessPhase += .1;
-  println(frameRate);
+//  brightnessPhase += .5;
+
+  // Rotate slowly
+  pCamera.setRotations(0,displayRotation+=.011,3.14159);
 }
 
 

@@ -8,6 +8,10 @@ void drawHud(PGraphics f) {
     fill(0);
     rect(hudX,hudY,displayWidth,displayHeight);
     image(f, hudX, hudY);
+    
+    fill(255);
+    textSize(24);
+    text(frameRate, hudX + displayWidth+4, height - 10); 
   popStyle();
   pCamera.endHUD();
 }
