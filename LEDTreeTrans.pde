@@ -50,8 +50,9 @@ PeasyCam pCamera;
 
 void setup() {
   size(1024, 768, OPENGL);
+//  size(1680, 1050, OPENGL);
   colorMode(RGB, 255);
-  frameRate(60);
+  frameRate(45);
   
   pCamera = new PeasyCam(this, 0, 1.2, 0, 4);
   pCamera.setMinimumDistance(2);
@@ -251,7 +252,7 @@ void draw() {
 //  brightnessPhase += .5;
 
   // Rotate slowly
-  pCamera.setRotations(0,displayRotation+=.011,3.14159);
+  pCamera.setRotations(0,displayRotation+=.006,3.14159);
 }
 
 
