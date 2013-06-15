@@ -229,10 +229,7 @@ void draw() {
   drawGround();
   
   // Draw the tree
-//  pushMatrix();
-//    scale(-1, 1, 1);  //TODO: Hack because all the mapping got mirrored
-    arch.draw();
-//  popMatrix();
+  arch.draw();
 
   // draw a hud
   drawHud(frame);
@@ -243,7 +240,7 @@ void draw() {
   
 //  bright = (sin(brightnessPhase) +1)/2;
 //  brightnessPhase += .1;
-//  println(frameRate);
+  println(frameRate);
 }
 
 

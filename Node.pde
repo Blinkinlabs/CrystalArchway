@@ -13,9 +13,9 @@ class Node {
     float posZ_ = posX*sin(PI/6) + posZ*cos(PI/6);
     posX_ = posX_ - 1.52;
     
-    m_posX = posX_*cos(angle) - posZ_*sin(angle);
+    m_posX = posX_*cos(-angle) - posZ_*sin(-angle);
     m_posY = posY_;
-    m_posZ = posX_*sin(angle) + posZ_*cos(angle);
+    m_posZ = posX_*sin(-angle) + posZ_*cos(-angle);
   }
   
   // For graph nodes

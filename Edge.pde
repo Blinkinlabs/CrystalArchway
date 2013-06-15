@@ -49,6 +49,7 @@ class Edge {
   // Draw a dot at a single pixel position
   void paint(PGraphics f, int position, color c) {
     m_pixels[position] = c; 
+    
     if(m_flipped) {
       position = m_length - 1 - position;
     }
@@ -70,19 +71,21 @@ class Edge {
       float y = nodes.get(m_startNode).m_posY - (nodes.get(m_startNode).m_posY - nodes.get(m_endNode).m_posY)/m_length*i;
       float z = nodes.get(m_startNode).m_posZ - (nodes.get(m_startNode).m_posZ - nodes.get(m_endNode).m_posZ)/m_length*i;
       
-      // set the color based on the image data
-//      color c = imageData[m_strip + (m_offset + i)*strips];
       // set the color based on the strip data
-      color c = m_pixels[i];
+      color c;
+        c = m_pixels[i];
       
       // Draw the individual LEDs
       pushMatrix();
+      pushStyle();
         translate(x, y, z);
         stroke(c);
         fill(c);
-//        //scale(rad);
-        ellipse(0,0,.02,.02);
-//        point(0,0);
+        strokeWeight(5);
+        point(0,0);
+        
+//        ellipse(0,0,.02,.02);
+      popStyle();
       popMatrix();
     }
   }

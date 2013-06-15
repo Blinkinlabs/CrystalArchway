@@ -9,7 +9,7 @@ class PulsingNode extends Pattern {
     super(channel, pitch, velocity);
     m_node = node;
     
-    m_color = color(255,0,255);
+    m_color = color(0,255,0);
   }
   
   void paint(PGraphics f) {
