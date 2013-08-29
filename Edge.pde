@@ -16,8 +16,13 @@ class Edge {
   int m_startNode;
   int m_endNode;
   
+  // For low-level openGL version
   FloatBuffer m_vbuffer;
   FloatBuffer m_cbuffer;
+  
+  // For PShape version
+  ArrayList<LED> LEDs;
+  PShape ledShape;
   
   color[] m_pixels;
 
@@ -40,6 +45,26 @@ class Edge {
     m_pixels = new color[m_length];
     
     computeLightPositionsGL();
+    
+    makeLEDParticles();
+  }
+  
+  void makeLEDParticles() {
+    // TODO: Do this globally since we only have one image
+    PImage sprite = loadImage("sprite.png");
+    
+    LEDs = new ArrayList<LED>();
+    ledShape = createShape(PShape.GROUP);
+
+    for (int i = 0; i < m_length; i++) {
+      float x = nodes.get(m_startNode).m_posX - (nodes.get(m_startNode).m_posX - nodes.get(m_endNode).m_posX)/m_length*i;
+      float y = nodes.get(m_startNode).m_posY - (nodes.get(m_startNode).m_posY - nodes.get(m_endNode).m_posY)/m_length*i;
+      float z = nodes.get(m_startNode).m_posZ - (nodes.get(m_startNode).m_posZ - nodes.get(m_endNode).m_posZ)/m_length*i;
+      
+      LED p = new LED(x, y, z, sprite);
+      LEDs.add(p);
+      ledShape.addChild(p.getShape());
+    }
   }
   
   void computeLightPositionsGL() {
@@ -88,7 +113,7 @@ class Edge {
     f.set(m_strip, m_offset + position, c);   
   }
   
-  void draw() {
+  void drawGL() {
     // Upload the new color data
     for (int i = 0; i < m_length; i++) { 
       // set the color based on the image data
@@ -120,6 +145,18 @@ class Edge {
     gl2.glDisableClientState(GL2.GL_COLOR_ARRAY);
 
     g.endPGL();
+  }
+  
+  drawParticles() {
+    for (int i = 0; i < m_length; i++) { 
+      LEDs[i].update(color(m_pixels[i]));
+    }
+    
+    shape(ledShape);
+  }
+  
+  void draw() {
+    drawGL();
   }
   
   PVector getPixelCoordinates(int position) {
