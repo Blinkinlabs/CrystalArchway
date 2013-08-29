@@ -1,3 +1,9 @@
+
+import java.nio.*;
+import javax.media.opengl.*;
+import com.jogamp.common.nio.*;
+
+
 class Edge {
   // Mapping into the strip image array
   int m_strip;
@@ -10,6 +16,8 @@ class Edge {
   int m_startNode;
   int m_endNode;
   
+  FloatBuffer m_vbuffer;
+  FloatBuffer m_cbuffer;
   
   color[] m_pixels;
 
@@ -25,11 +33,34 @@ class Edge {
     m_strip = strip;
     m_offset = offset;
     m_flipped = flipped;
-    m_length = 31;  // For simplicity
+    m_length = 60;  // For simplicity
     m_startNode = startNode + nodeOffset;
     m_endNode = endNode + nodeOffset;
     
     m_pixels = new color[m_length];
+    
+    computeLightPositionsGL();
+  }
+  
+  void computeLightPositionsGL() {
+    GL gl = g.beginPGL().gl;
+
+    m_vbuffer = Buffers.newDirectFloatBuffer(m_length * 3);
+    m_cbuffer = Buffers.newDirectFloatBuffer(m_length * 3);
+
+    for (int i = 0; i < m_length; i++) {
+      float x = nodes.get(m_startNode).m_posX - (nodes.get(m_startNode).m_posX - nodes.get(m_endNode).m_posX)/m_length*i;
+      float y = nodes.get(m_startNode).m_posY - (nodes.get(m_startNode).m_posY - nodes.get(m_endNode).m_posY)/m_length*i;
+      float z = nodes.get(m_startNode).m_posZ - (nodes.get(m_startNode).m_posZ - nodes.get(m_endNode).m_posZ)/m_length*i;
+
+      m_vbuffer.put(x);
+      m_vbuffer.put(y);
+      m_vbuffer.put(z);
+
+    }
+    m_vbuffer.rewind();
+
+    g.endPGL();
   }
 
   // Paint a solid color along the whole edge
@@ -54,40 +85,41 @@ class Edge {
       position = m_length - 1 - position;
     }
    
-//    f.pushStyle();
-//      f.stroke(c);
-//      f.strokeWeight(2);
-//      f.noSmooth();
-      f.set(m_strip, m_offset + position, c);
-//    f.popStyle();   
+    f.set(m_strip, m_offset + position, c);   
   }
   
-  
   void draw() {
+    // Upload the new color data
     for (int i = 0; i < m_length; i++) { 
-  
-      // Calculate the location based on the end points
-      float x = nodes.get(m_startNode).m_posX - (nodes.get(m_startNode).m_posX - nodes.get(m_endNode).m_posX)/m_length*i;
-      float y = nodes.get(m_startNode).m_posY - (nodes.get(m_startNode).m_posY - nodes.get(m_endNode).m_posY)/m_length*i;
-      float z = nodes.get(m_startNode).m_posZ - (nodes.get(m_startNode).m_posZ - nodes.get(m_endNode).m_posZ)/m_length*i;
+      // set the color based on the image data
+      color c = m_pixels[i];
       
-      // set the color based on the strip data
-      color c;
-        c = m_pixels[i];
-      
-      // Draw the individual LEDs
-      pushMatrix();
-      pushStyle();
-        translate(x, y, z);
-        stroke(c);
-        fill(c);
-        strokeWeight(5);
-        point(0,0);
-        
-//        ellipse(0,0,.02,.02);
-      popStyle();
-      popMatrix();
+      m_cbuffer.put(red(c)/255.0);
+      m_cbuffer.put(green(c)/255.0);
+      m_cbuffer.put(blue(c)/255.0);
     }
+    m_cbuffer.rewind();
+
+    PGraphicsOpenGL pg = ((PGraphicsOpenGL)g);
+    PGL pgl = pg.beginPGL();
+    GL2 gl2 = pgl.gl.getGL2();
+
+    gl2.glEnableClientState(GL2.GL_VERTEX_ARRAY);
+    gl2.glVertexPointer(3, GL2.GL_FLOAT, 0, m_vbuffer);
+ 
+    gl2.glEnableClientState(GL2.GL_COLOR_ARRAY);
+    gl2.glColorPointer(3, GL2.GL_FLOAT, 0, m_cbuffer);
+    
+
+    gl2.glPushMatrix();
+      gl2.glPointSize(2);
+      gl2.glDrawArrays(GL2.GL_POINTS, 0, m_length);
+    gl2.glPopMatrix();
+
+    gl2.glDisableClientState(GL2.GL_VERTEX_ARRAY);
+    gl2.glDisableClientState(GL2.GL_COLOR_ARRAY);
+
+    g.endPGL();
   }
   
   PVector getPixelCoordinates(int position) {

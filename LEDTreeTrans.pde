@@ -1,3 +1,6 @@
+import oscP5.*;
+import netP5.*;
+
 import peasy.org.apache.commons.math.*;
 import peasy.*;
 import peasy.org.apache.commons.math.geometry.*;
@@ -10,6 +13,8 @@ import java.util.concurrent.*;
 
 import java.util.*;
 
+OscP5 osc;  
+
 /////////// Configuration Options /////////////////////
 
 // Network configuration
@@ -17,7 +22,7 @@ String transmit_address = "127.0.0.1";  // Default 127.0.0.1
 int transmit_port       = 58082;        // Default 58802, simlator on +1
 
 // Display configuration
-int displayHeight = 160;                // 160 for full-height strips
+int displayHeight = 320;                // 160 for full-height strips
 int displayWidth  = 40;                 // 8* number of control boxes
 
 float bright = 1;                       // Global brightness modifier
@@ -52,7 +57,9 @@ void setup() {
   size(1024, 768, OPENGL);
 //  size(1680, 1050, OPENGL);
   colorMode(RGB, 255);
-  frameRate(45);
+  frameRate(60);
+  
+  osc = new OscP5(this,5600);
   
   pCamera = new PeasyCam(this, 0, 1.2, 0, 4);
   pCamera.setMinimumDistance(2);
@@ -248,8 +255,8 @@ void draw() {
   display.sendData(frame);
   
   
-//  bright = (sin(brightnessPhase) +1)/2;
-//  brightnessPhase += .5;
+  bright = (sin(brightnessPhase) +3)/4;
+  brightnessPhase += .5;
 
   // Rotate slowly
   pCamera.setRotations(0,displayRotation+=.006,3.14159);
@@ -270,23 +277,23 @@ void noteOff(int channel, int pitch, int velocity) {
 
 // Inject patterns for now, since we don't have a MIDI interface maybe
 void keyPressed() {  
-  if (key == CODED) {
-    if (keyCode == UP) {
-      edges.get(currentEdge).m_offset += 1;
-    }
-    if (keyCode == DOWN) {
-      // TODO: Make this not go over bounds?
-      edges.get(currentEdge).m_offset -= 1;
-    }
-    if (keyCode == LEFT) {
-      // TODO: Make this not go over bounds?
-      edges.get(currentEdge).m_strip -= 1;
-    }
-    if (keyCode == RIGHT) {
-      // TODO: Make this not go over bounds?
-      edges.get(currentEdge).m_strip += 1;
-    }
-  }
+//  if (key == CODED) {
+//    if (keyCode == UP) {
+//      edges.get(currentEdge).m_offset += 1;
+//    }
+//    if (keyCode == DOWN) {
+//      // TODO: Make this not go over bounds?
+//      edges.get(currentEdge).m_offset -= 1;
+//    }
+//    if (keyCode == LEFT) {
+//      // TODO: Make this not go over bounds?
+//      edges.get(currentEdge).m_strip -= 1;
+//    }
+//    if (keyCode == RIGHT) {
+//      // TODO: Make this not go over bounds?
+//      edges.get(currentEdge).m_strip += 1;
+//    }
+//  }
   if (key == '/') {
     edges.get(currentEdge).m_flipped = !edges.get(currentEdge).m_flipped;
   }
