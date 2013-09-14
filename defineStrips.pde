@@ -1,6 +1,3 @@
-//// Share this between the transmitter and simulator.
-
-
 List<Node> defineNodes() {
   // Given an iscocoles triangle with side length L=1, like this:
   //       a

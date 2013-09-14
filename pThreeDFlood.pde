@@ -1,12 +1,9 @@
 // A pattern that lights up a single edge with a solid color that changes randomly
 class ThreeDFlood extends Pattern {
-//  float m_height;
-  color m_color;
-  
   float m_phase;
   
   ThreeDFlood() {
-    m_color = color(0,0,255);
+    m_name = "ThreeDFlood";
   }
   
   void paint(PGraphics f) {
@@ -21,10 +18,19 @@ class ThreeDFlood extends Pattern {
 //            float b = (sin(coords.z*3 + m_phase*4.3) + 1)*128*random(.8,1);
 //            e.paint(f, i, color(r,g,b));
 
-// Rainbow sweeps
-            float r = (((coords.x*3 + m_phase    )%10>5) ? 255.0 : 0.0);
-            float g = (((coords.y*3 + m_phase*3.2)%10>5) ? 255.0 : 0.0);
-            float b = (((coords.z*3 + m_phase*4.3)%10>5) ? 255.0 : 0.0);
+
+
+// Color sweeps
+//            float r = (((coords.x*3 + m_phase    )%10>5) ? 255.0 : 0.0);
+//            float g = (((coords.y*3 + m_phase*3.2)%10>5) ? 255.0 : 0.0);
+//            float b = (((coords.z*3 + m_phase*4.3)%10>5) ? 255.0 : 0.0);
+//            e.paint(f, i, color(r,g,b));
+
+// Spherical bombs
+            float distanceFromCenter = dist(coords.x, coords.y, coords.z, 0,1,0);
+            float r = map(sin(distanceFromCenter*3 + m_phase),-1,1,0,255); 
+            float g = 0;
+            float b = 0;
             e.paint(f, i, color(r,g,b));
 
       }

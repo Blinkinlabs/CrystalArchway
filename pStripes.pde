@@ -10,6 +10,10 @@ class Stripes extends Pattern {
   int m_stripSeparation = 7;
   int m_lineWidth       = 2;
   
+  Stripes() {
+    m_name = "Stripes";
+  }
+  
   void paint(PGraphics f) {
     f.pushStyle();
       f.noStroke();

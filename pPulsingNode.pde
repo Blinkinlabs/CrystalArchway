@@ -10,6 +10,8 @@ class PulsingNode extends Pattern {
     m_node = node;
     
     m_color = color(0,255,0);
+    
+    m_name = "PulsingNode" + node.m_name;
   }
   
   void paint(PGraphics f) {

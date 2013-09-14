@@ -4,6 +4,8 @@ class RainbowColors extends Pattern {
   
   RainbowColors() {
     m_frameStart = frameCount;
+    
+    m_name = "RainbowColors";
   }
   
   void paint(PGraphics f) {

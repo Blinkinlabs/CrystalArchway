@@ -30,6 +30,22 @@ class Node {
     m_posZ = posZ;
   }
   
+  // TODO: Technically this could cache its results, if it's too demanding.
+  List<Edge> getConnectedEdges() {
+    List<Edge> connectedEdges = new LinkedList<Edge>();
+    
+    for(Edge e : edges) {
+      if(e.m_startNode == m_name) {
+        connectedEdges.add(e);
+      }
+      if(e.m_endNode == m_name) {
+        connectedEdges.add(e);
+      }
+    }
+    
+    return connectedEdges;
+  }
+  
   void draw() {
     pushMatrix();
       translate(m_posX, m_posY, m_posZ);

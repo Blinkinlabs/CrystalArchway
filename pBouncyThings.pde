@@ -3,6 +3,10 @@
 class BouncyThings extends Pattern {
   List<BouncyThing> bouncyThings;
   
+  BouncyThings() {
+    m_name = "BouncyThings";
+  }
+  
   void paint(PGraphics f) {
     if(bouncyThings == null) {
       bouncyThings = new LinkedList<BouncyThing>();

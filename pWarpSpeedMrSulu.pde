@@ -2,6 +2,10 @@ class WarpSpeedMrSulu extends Pattern {
   int NUM_STARS = 200;
   WarpStar[] warpstars;
 
+  WarpSpeedMrSulu() {
+    m_name = "WarpSpeedMrSulu";
+  }
+
   void setup(PApplet parent) {
     super.setup(parent);
     warpstars = new WarpStar[NUM_STARS];

@@ -45,8 +45,7 @@ class Edge {
     m_pixels = new color[m_length];
     
     computeLightPositionsGL();
-    
-    makeLEDParticles();
+//    makeLEDParticles();
   }
   
   void makeLEDParticles() {
@@ -135,11 +134,16 @@ class Edge {
     gl2.glEnableClientState(GL2.GL_COLOR_ARRAY);
     gl2.glColorPointer(3, GL2.GL_FLOAT, 0, m_cbuffer);
     
+//    gl2.glEnable(GL2.GL_POINT_SPRITE);
+//    gl2.glTexEnvi(GL2.GL_POINT_SPRITE, GL2.GL_COORD_REPLACE, GL2.GL_TRUE); 
 
     gl2.glPushMatrix();
-      gl2.glPointSize(2);
+      gl2.glPointSize(3);
+
       gl2.glDrawArrays(GL2.GL_POINTS, 0, m_length);
     gl2.glPopMatrix();
+
+//    gl2.glDisable(GL2.GL_POINT_SPRITE);
 
     gl2.glDisableClientState(GL2.GL_VERTEX_ARRAY);
     gl2.glDisableClientState(GL2.GL_COLOR_ARRAY);
@@ -147,9 +151,9 @@ class Edge {
     g.endPGL();
   }
   
-  drawParticles() {
+  void drawParticles() {
     for (int i = 0; i < m_length; i++) { 
-      LEDs[i].update(color(m_pixels[i]));
+      LEDs.get(i).update(color(m_pixels[i]));
     }
     
     shape(ledShape);
@@ -157,6 +161,7 @@ class Edge {
   
   void draw() {
     drawGL();
+//    drawParticles();
   }
   
   PVector getPixelCoordinates(int position) {

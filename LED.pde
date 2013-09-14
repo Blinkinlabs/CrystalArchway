@@ -9,7 +9,7 @@ class LED {
   float partSize;
 
   LED(float x, float y, float z, PImage sprite) {
-    partSize = 20;
+    partSize = .05;
     
     part = createShape();
     part.beginShape(QUAD);
@@ -19,8 +19,8 @@ class LED {
       // TODO: Translate this so the LED faces in the correct direction; also, define the correct direction!
       part.vertex(x-partSize/2, y-partSize/2, z, 0,            0);
       part.vertex(x+partSize/2, y-partSize/2, z, sprite.width, 0);
-      part.vertex(x+partSize/2, y+partSize/2, -z, sprite.width, sprite.height);
-      part.vertex(x-partSize/2, y+partSize/2, -z, 0,            sprite.height);
+      part.vertex(x+partSize/2, y+partSize/2, z, sprite.width, sprite.height);
+      part.vertex(x-partSize/2, y+partSize/2, z, 0,            sprite.height);
     part.endShape(); 
   }
 

@@ -4,6 +4,10 @@ class RGBStripes extends Pattern {
   int m_colorAngle = 0;
   int m_speed      = 1;
   
+  RGBStripes() {
+    m_name = "RGBStripes";
+  }
+  
   void paint(PGraphics f) {
     for (int row = 0; row < displayHeight; row++) {
         int r = (((row)*2          + 100*1/displayWidth + m_colorAngle +  0)%100)*(255/100);

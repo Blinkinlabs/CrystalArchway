@@ -13,7 +13,9 @@ import java.util.concurrent.*;
 
 import java.util.*;
 
-OscP5 osc;  
+OscP5 osc;
+
+PShader nebula;
 
 /////////// Configuration Options /////////////////////
 
@@ -22,8 +24,8 @@ String transmit_address = "127.0.0.1";  // Default 127.0.0.1
 int transmit_port       = 58082;        // Default 58802, simlator on +1
 
 // Display configuration
-int displayHeight = 320;                // 160 for full-height strips
-int displayWidth  = 40;                 // 8* number of control boxes
+int displayHeight = 240;                // 160 for full-height strips
+int displayWidth  = 48;                 // 8* number of control boxes
 
 float bright = 1;                       // Global brightness modifier
 String midiInputName = "IAC Bus 1";
@@ -79,6 +81,14 @@ void setup() {
   
   frame = createGraphics(displayWidth, displayHeight, P3D);
   
+  // Writing to the depth buffer is disabled to avoid rendering
+  // artifacts due to the fact that the particles are semi-transparent
+  // but not z-sorted.
+  hint(DISABLE_DEPTH_MASK);
+  
+  nebula = loadShader("nebula.glsl");
+  nebula.set("resolution", float(width), float(height));
+  
   nodes = defineNodes();
   edges = defineEdges();
   arch = new Fixture(edges);
@@ -109,6 +119,11 @@ void setup() {
   rainbow.m_channel = 3;
   rainbow.m_pitch   = 40;
   availablePatterns.put("Rainbow", rainbow);
+  
+  Stars stars = new Stars();
+  stars.m_channel = 3;
+  stars.m_pitch   = 41;
+  availablePatterns.put("Stars", stars);
 
   for (Map.Entry r : availablePatterns.entrySet()) {
     Pattern pat = (Pattern) r.getValue();
@@ -230,6 +245,14 @@ void paintPatterns() {
 
 void draw() {
   background(color(0,0,40));
+  
+//  pCamera.beginHUD();
+//    nebula.set("time", millis() / 500.0); 
+//    shader(nebula); 
+//    rect(0, 0, width, height);
+//    resetShader();
+//  pCamera.endHUD();
+  
   for(Edge e : edges) {
     e.paint(frame, color(0));
   }
@@ -254,12 +277,11 @@ void draw() {
   // Finally send the thing
   display.sendData(frame);
   
-  
   bright = (sin(brightnessPhase) +3)/4;
   brightnessPhase += .5;
 
   // Rotate slowly
-  pCamera.setRotations(0,displayRotation+=.006,3.14159);
+  pCamera.setRotations(0,displayRotation+=.004,3.14159);
 }
 
 
