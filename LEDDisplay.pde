@@ -157,14 +157,14 @@ public class LEDDisplay {
           b = int(blue(image.pixels[y*w+x]));
           
           if (enableGammaCorrection) {
-            r = (int)(Math.pow(r/256.0,this.gammaValue)*256*bright);
-            g = (int)(Math.pow(g/256.0,this.gammaValue)*256*bright);
-            b = (int)(Math.pow(b/256.0,this.gammaValue)*256*bright);
+            r = (int)(Math.pow(r/256.0,this.gammaValue)*256*g_bright);
+            g = (int)(Math.pow(g/256.0,this.gammaValue)*256*g_bright);
+            b = (int)(Math.pow(b/256.0,this.gammaValue)*256*g_bright);
           }
           else {
-            r = (int)(r*bright);
-            g = (int)(g*bright);
-            b = (int)(b*bright);
+            r = (int)(r*g_bright);
+            g = (int)(g*g_bright);
+            b = (int)(b*g_bright);
           }
           
           buffer[(getAddress(x, y)*3)+1] = byte(r);

@@ -164,6 +164,14 @@ class Edge {
 //    drawParticles();
   }
   
+  PVector getCentroid() {
+    float x = (nodes.get(m_startNode).m_posX + nodes.get(m_endNode).m_posX) / 2;
+    float y = (nodes.get(m_startNode).m_posY + nodes.get(m_endNode).m_posY) / 2;
+    float z = (nodes.get(m_startNode).m_posZ + nodes.get(m_endNode).m_posZ) / 2;
+    
+    return new PVector(x,y,z);
+  }
+  
   PVector getPixelCoordinates(int position) {
     float x = nodes.get(m_startNode).m_posX - (nodes.get(m_startNode).m_posX - nodes.get(m_endNode).m_posX)/m_length*position;
     float y = nodes.get(m_startNode).m_posY - (nodes.get(m_startNode).m_posY - nodes.get(m_endNode).m_posY)/m_length*position;

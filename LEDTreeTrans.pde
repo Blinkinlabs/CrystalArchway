@@ -13,27 +13,23 @@ import java.util.concurrent.*;
 
 import java.util.*;
 
-OscP5 osc;
-
-PShader nebula;
+OscP5 g_osc;
 
 /////////// Configuration Options /////////////////////
 
 // Network configuration
-String transmit_address = "127.0.0.1";  // Default 127.0.0.1
-int transmit_port       = 58082;        // Default 58802, simlator on +1
+String g_transmit_address = "127.0.0.1";  // Default 127.0.0.1
+int g_transmit_port       = 58082;        // Default 58802, simlator on +1
 
 // Display configuration
 int displayHeight = 240;                // 160 for full-height strips
 int displayWidth  = 48;                 // 8* number of control boxes
 
-float bright = 1;                       // Global brightness modifier
-String midiInputName = "IAC Bus 1";
+float g_bright = 1;                       // Global brightness modifier
+String g_midiInputName = "IAC Bus 1";
 
 ///////////////////////////////////////////////////////
-float brightnessPhase;
-
-HashMap<String, Pattern> availablePatterns;  // List of available patterns to draw
+HashMap<String, Pattern> g_availablePatterns;  // List of available patterns to draw
 
 List<Node> nodes;  // Our geometry
 List<Edge> edges;
@@ -61,7 +57,7 @@ void setup() {
   colorMode(RGB, 255);
   frameRate(60);
   
-  osc = new OscP5(this,5600);
+  g_osc = new OscP5(this,5600);
   
   pCamera = new PeasyCam(this, 0, 1.2, 0, 4);
   pCamera.setMinimumDistance(2);
@@ -86,46 +82,38 @@ void setup() {
   // but not z-sorted.
   hint(DISABLE_DEPTH_MASK);
   
-  nebula = loadShader("nebula.glsl");
-  nebula.set("resolution", float(width), float(height));
-  
   nodes = defineNodes();
   edges = defineEdges();
   arch = new Fixture(edges);
 
-  availablePatterns = new HashMap<String, Pattern>();
+  g_availablePatterns = new HashMap<String, Pattern>();
   
   RGBStripes rgb = new RGBStripes();
   rgb.m_channel = 3;
   rgb.m_pitch   = 36;
-  availablePatterns.put("RGB", rgb);
+  g_availablePatterns.put("RGB", rgb);
 
   Stripes stripes = new Stripes();
   stripes.m_channel = 3;
   stripes.m_pitch   = 37;
-  availablePatterns.put("Stripes", stripes);
+  g_availablePatterns.put("Stripes", stripes);
   
   BouncyThings bt = new BouncyThings();
   bt.m_channel = 3;
   bt.m_pitch   = 38;
-  availablePatterns.put("BouncyThings", bt);
-
-  WarpSpeedMrSulu warp = new WarpSpeedMrSulu();
-  warp.m_channel = 3;
-  warp.m_pitch   = 39;
-  availablePatterns.put("Warp", warp);
+  g_availablePatterns.put("BouncyThings", bt);
   
   RainbowColors rainbow = new RainbowColors();
   rainbow.m_channel = 3;
   rainbow.m_pitch   = 40;
-  availablePatterns.put("Rainbow", rainbow);
+  g_availablePatterns.put("Rainbow", rainbow);
   
   Stars stars = new Stars();
   stars.m_channel = 3;
   stars.m_pitch   = 41;
-  availablePatterns.put("Stars", stars);
+  g_availablePatterns.put("Stars", stars);
 
-  for (Map.Entry r : availablePatterns.entrySet()) {
+  for (Map.Entry r : g_availablePatterns.entrySet()) {
     Pattern pat = (Pattern) r.getValue();
     pat.setup(this);
     pat.reset();
@@ -137,14 +125,14 @@ void setup() {
     layers.add(new LinkedList<Pattern>());
   }
 
-  display = new LEDDisplay(this, displayWidth, displayHeight, true, transmit_address, transmit_port);
+  display = new LEDDisplay(this, displayWidth, displayHeight, true, g_transmit_address, g_transmit_port);
   display.setAddressingMode(LEDDisplay.ADDRESSING_HORIZONTAL_NORMAL);  
   display.setEnableGammaCorrection(true);
 
   noteOnMessages = new LinkedBlockingQueue<MidiMessage>();
   noteOffMessages = new LinkedBlockingQueue<MidiMessage>();
 
-  myBus = new MidiBus(this, midiInputName, -1);  
+  myBus = new MidiBus(this, g_midiInputName, -1);  
 }
 
 void updatePatterns() {
@@ -173,10 +161,10 @@ void updatePatterns() {
       break;
 
     case 3: // Channel 4: enable patterns
-      for (Map.Entry p : availablePatterns.entrySet()) {
+      for (Map.Entry p : g_availablePatterns.entrySet()) {
         Pattern pat = (Pattern) p.getValue();
         if (pat.m_channel == m.m_channel && pat.m_pitch == m.m_pitch && !layers.get(0).contains(pat)) {
-          println("Adding " + pat);
+          pat.reset();
           layers.get(0).add(pat);
         }
       }
@@ -276,9 +264,6 @@ void draw() {
   
   // Finally send the thing
   display.sendData(frame);
-  
-  bright = (sin(brightnessPhase) +3)/4;
-  brightnessPhase += .5;
 
   // Rotate slowly
   pCamera.setRotations(0,displayRotation+=.004,3.14159);

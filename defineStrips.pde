@@ -55,7 +55,7 @@ List<Node> defineNodes() {
   Nodes.add(new Node(24, A, 3*D, B, PI*2/3));
 
   Nodes.add(new Node(25, 0+offX, 2*D+offZ, C-offY, PI*2/3));  // layer 4 (note: faced from edge of layer 2-3 connection)
-  Nodes.add(new Node(26, -A+offX, 2*D+offZ, -B-offY, PI*2/3));
+  Nodes.add(new Node(26, -A+offX, 2*D+offZ, -B-offY, PI*2/3));  // Note: repeat of node 11
   Nodes.add(new Node(27, -A+offX, 3*D+offZ, B-offY, PI*2/3));
 
 
@@ -72,9 +72,9 @@ List<Node> defineNodes() {
   Nodes.add(new Node(37, 0, 3*D, -C, PI*4/3));  // layer 3
   Nodes.add(new Node(38, A, 3*D, B, PI*4/3));
 
-  Nodes.add(new Node(39, 0+offX, 2*D+offZ, C-offY, PI*4/3));  // layer 4 (note: faced from edge of layer 2-3 connection)
-  Nodes.add(new Node(41, -A+offX, 2*D+offZ, -B-offY, PI*4/3));
-  Nodes.add(new Node(42, -A+offX, 3*D+offZ, B-offY, PI*4/3));
+  Nodes.add(new Node(39, 0+offX, 2*D+offZ, C-offY, PI*4/3));  // layer 4 (note: faced from edge of layer 2-3 connection) // Duplicate of node 12
+  Nodes.add(new Node(40, -A+offX, 2*D+offZ, -B-offY, PI*4/3));  // Duplicate of node 25
+  Nodes.add(new Node(41, -A+offX, 3*D+offZ, B-offY, PI*4/3)); 
 
   return Nodes;
 }
@@ -317,14 +317,14 @@ List<Edge> defineEdges() {
   Edges.add(new Edge(   0,  10,   0, false,  22,  23,  0));
   Edges.add(new Edge(   0,  14,   0, false,  22,  24,  0));
   Edges.add(new Edge(   0,   8,  35, false,  23,  24,  0));
-  Edges.add(new Edge(   0,   8,   0,  true,  23,  26,  0));
+  Edges.add(new Edge(   0,   8,   0,  true,  23,  11,  0));
   Edges.add(new Edge(   0,  10,  34, false,  23,  27,  0));
   Edges.add(new Edge(   0,  14,  34, false,  24,  27,  0));
   Edges.add(new Edge(   0,   8,  69, false,  24,  25,  0));
   Edges.add(new Edge(   0,  10, 102,  true,  22,  25,  0));
-  Edges.add(new Edge(   0,  14, 101,  true,  22,  26,  0));
-  Edges.add(new Edge(   0,   8, 103, false,  25,  26,  0));
-  Edges.add(new Edge(   0,  14,  67,  true,  26,  27,  0));
+  Edges.add(new Edge(   0,  14, 101,  true,  22,  11,  0));
+  Edges.add(new Edge(   0,   8, 103, false,  25,  11,  0));
+  Edges.add(new Edge(   0,  14,  67,  true,  11,  27,  0));
   Edges.add(new Edge(   0,  10,  68, false,  27,  25,  0));
   Edges.add(new Edge(   0,  17, 102,  true,  28,  29,  0));
   Edges.add(new Edge(   0,  17,  68,  true,  29,  30,  0));
@@ -352,15 +352,15 @@ List<Edge> defineEdges() {
   Edges.add(new Edge(   0,  22, 100,  true,  36,  37,  0));
   Edges.add(new Edge(   0,  21, 101,  true,  36,  38,  0));
   Edges.add(new Edge(   0,  16,  34, false,  37,  38,  0));
-  Edges.add(new Edge(   0,  16,   0,  true,  37,  40,  0));
+  Edges.add(new Edge(   0,  16,   0,  true,  37,  25,  0));
   Edges.add(new Edge(   0,  22,  67,  true,  37,  41,  0));
   Edges.add(new Edge(   0,  21,  67,  true,  38,  41,  0));
-  Edges.add(new Edge(   0,  16,  69, false,  38,  39,  0));
-  Edges.add(new Edge(   0,  22,   0, false,  36,  39,  0));
-  Edges.add(new Edge(   0,  21,   0, false,  36,  40,  0));
-  Edges.add(new Edge(   0,  16, 101, false,  39,  40,  0));
-  Edges.add(new Edge(   0,  21,  34, false,  40,  41,  0));
-  Edges.add(new Edge(   0,  22,  34,  true,  41,  39,  0));
+  Edges.add(new Edge(   0,  16,  69, false,  38,  12,  0));
+  Edges.add(new Edge(   0,  22,   0, false,  36,  12,  0));
+  Edges.add(new Edge(   0,  21,   0, false,  36,  25,  0));
+  Edges.add(new Edge(   0,  16, 101, false,  12,  25,  0));
+  Edges.add(new Edge(   0,  21,  34, false,  25,  41,  0));
+  Edges.add(new Edge(   0,  22,  34,  true,  41,  12,  0));
   // End of edge defines
 
   return Edges;

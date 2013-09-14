@@ -30,7 +30,6 @@ class Node {
     m_posZ = posZ;
   }
   
-  // TODO: Technically this could cache its results, if it's too demanding.
   List<Edge> getConnectedEdges() {
     List<Edge> connectedEdges = new LinkedList<Edge>();
     
