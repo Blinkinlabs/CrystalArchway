@@ -157,6 +157,10 @@ public class LEDDisplay {
           b = int(blue(image.pixels[y*w+x]));
           
           if (enableGammaCorrection) {
+            //r = 255; //(int)(Math.pow(r/256.0,this.gammaValue)*256*g_bright);
+            //g = 255; //(int)(Math.pow(g/256.0,this.gammaValue)*256*g_bright);
+            //b = 255; //(int)(Math.pow(b/256.0,this.gammaValue)*256*g_bright);
+
             r = (int)(Math.pow(r/256.0,this.gammaValue)*256*g_bright);
             g = (int)(Math.pow(g/256.0,this.gammaValue)*256*g_bright);
             b = (int)(Math.pow(b/256.0,this.gammaValue)*256*g_bright);

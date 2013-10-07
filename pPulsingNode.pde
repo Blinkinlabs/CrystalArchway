@@ -5,8 +5,7 @@ class PulsingNode extends Pattern {
   
   float m_phase;
   
-  PulsingNode(Node node, int channel, int pitch, int velocity) {
-    super(channel, pitch, velocity);
+  PulsingNode(Node node) {
     m_node = node;
     
     m_color = color(0,255,0);
@@ -15,7 +14,7 @@ class PulsingNode extends Pattern {
   }
   
   void paint(PGraphics f) {
-    for(Edge e : edges) {
+    for(Edge e : g_edges) {
       if(e.m_startNode == m_node.m_name) {
         for(int i = 0; i < 3 + 3*sin(m_phase); i++) {
           e.paint(f, i, m_color);

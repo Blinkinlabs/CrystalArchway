@@ -33,7 +33,7 @@ class Node {
   List<Edge> getConnectedEdges() {
     List<Edge> connectedEdges = new LinkedList<Edge>();
     
-    for(Edge e : edges) {
+    for(Edge e : g_edges) {
       if(e.m_startNode == m_name) {
         connectedEdges.add(e);
       }
@@ -48,8 +48,8 @@ class Node {
   void draw() {
     pushMatrix();
       translate(m_posX, m_posY, m_posZ);
-      fill(255);
-      stroke(255);
+      fill(128);
+      stroke(128);
       strokeWeight(4);
       point(0,0);
     popMatrix();

@@ -1,5 +1,5 @@
 void drawHud(PGraphics f) {
-  pCamera.beginHUD();
+  g_pCamera.beginHUD();
   pushStyle();
   
     // Show the current frame
@@ -21,7 +21,7 @@ void drawHud(PGraphics f) {
     textSize(16);
     float x = textWidth(" ");
     float y = textAscent();
-    for(List<Pattern> l : layers) {
+    for(List<Pattern> l : g_layers) {
       for (Pattern p : l) {
         text(p.m_name, x,y);
         y += textAscent() + textDescent();
@@ -31,5 +31,5 @@ void drawHud(PGraphics f) {
     
  
   popStyle();
-  pCamera.endHUD();
+  g_pCamera.endHUD();
 }

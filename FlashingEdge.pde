@@ -2,8 +2,7 @@
 class FlashingEdge extends Pattern {
   Edge m_edge;
   
-  FlashingEdge(Edge edge, int channel, int pitch, int velocity) {
-    super(channel, pitch, velocity);
+  FlashingEdge(Edge edge) {
     m_edge = edge;
   }
   

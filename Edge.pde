@@ -56,9 +56,9 @@ class Edge {
     ledShape = createShape(PShape.GROUP);
 
     for (int i = 0; i < m_length; i++) {
-      float x = nodes.get(m_startNode).m_posX - (nodes.get(m_startNode).m_posX - nodes.get(m_endNode).m_posX)/m_length*i;
-      float y = nodes.get(m_startNode).m_posY - (nodes.get(m_startNode).m_posY - nodes.get(m_endNode).m_posY)/m_length*i;
-      float z = nodes.get(m_startNode).m_posZ - (nodes.get(m_startNode).m_posZ - nodes.get(m_endNode).m_posZ)/m_length*i;
+      float x = g_nodes.get(m_startNode).m_posX - (g_nodes.get(m_startNode).m_posX - g_nodes.get(m_endNode).m_posX)/m_length*i;
+      float y = g_nodes.get(m_startNode).m_posY - (g_nodes.get(m_startNode).m_posY - g_nodes.get(m_endNode).m_posY)/m_length*i;
+      float z = g_nodes.get(m_startNode).m_posZ - (g_nodes.get(m_startNode).m_posZ - g_nodes.get(m_endNode).m_posZ)/m_length*i;
       
       LED p = new LED(x, y, z, sprite);
       LEDs.add(p);
@@ -73,9 +73,9 @@ class Edge {
     m_cbuffer = Buffers.newDirectFloatBuffer(m_length * 3);
 
     for (int i = 0; i < m_length; i++) {
-      float x = nodes.get(m_startNode).m_posX - (nodes.get(m_startNode).m_posX - nodes.get(m_endNode).m_posX)/m_length*i;
-      float y = nodes.get(m_startNode).m_posY - (nodes.get(m_startNode).m_posY - nodes.get(m_endNode).m_posY)/m_length*i;
-      float z = nodes.get(m_startNode).m_posZ - (nodes.get(m_startNode).m_posZ - nodes.get(m_endNode).m_posZ)/m_length*i;
+      float x = g_nodes.get(m_startNode).m_posX - (g_nodes.get(m_startNode).m_posX - g_nodes.get(m_endNode).m_posX)/m_length*i;
+      float y = g_nodes.get(m_startNode).m_posY - (g_nodes.get(m_startNode).m_posY - g_nodes.get(m_endNode).m_posY)/m_length*i;
+      float z = g_nodes.get(m_startNode).m_posZ - (g_nodes.get(m_startNode).m_posZ - g_nodes.get(m_endNode).m_posZ)/m_length*i;
 
       m_vbuffer.put(x);
       m_vbuffer.put(y);
@@ -108,7 +108,6 @@ class Edge {
     if(m_flipped) {
       position = m_length - 1 - position;
     }
-   
     f.set(m_strip, m_offset + position, c);   
   }
   
@@ -165,17 +164,17 @@ class Edge {
   }
   
   PVector getCentroid() {
-    float x = (nodes.get(m_startNode).m_posX + nodes.get(m_endNode).m_posX) / 2;
-    float y = (nodes.get(m_startNode).m_posY + nodes.get(m_endNode).m_posY) / 2;
-    float z = (nodes.get(m_startNode).m_posZ + nodes.get(m_endNode).m_posZ) / 2;
+    float x = (g_nodes.get(m_startNode).m_posX + g_nodes.get(m_endNode).m_posX) / 2;
+    float y = (g_nodes.get(m_startNode).m_posY + g_nodes.get(m_endNode).m_posY) / 2;
+    float z = (g_nodes.get(m_startNode).m_posZ + g_nodes.get(m_endNode).m_posZ) / 2;
     
     return new PVector(x,y,z);
   }
   
   PVector getPixelCoordinates(int position) {
-    float x = nodes.get(m_startNode).m_posX - (nodes.get(m_startNode).m_posX - nodes.get(m_endNode).m_posX)/m_length*position;
-    float y = nodes.get(m_startNode).m_posY - (nodes.get(m_startNode).m_posY - nodes.get(m_endNode).m_posY)/m_length*position;
-    float z = nodes.get(m_startNode).m_posZ - (nodes.get(m_startNode).m_posZ - nodes.get(m_endNode).m_posZ)/m_length*position;
+    float x = g_nodes.get(m_startNode).m_posX - (g_nodes.get(m_startNode).m_posX - g_nodes.get(m_endNode).m_posX)/m_length*position;
+    float y = g_nodes.get(m_startNode).m_posY - (g_nodes.get(m_startNode).m_posY - g_nodes.get(m_endNode).m_posY)/m_length*position;
+    float z = g_nodes.get(m_startNode).m_posZ - (g_nodes.get(m_startNode).m_posZ - g_nodes.get(m_endNode).m_posZ)/m_length*position;
     
     return new PVector(x,y,z);
   }

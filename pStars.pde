@@ -10,7 +10,7 @@ class Stars extends Pattern {
   void reset() {
     m_stars = new LinkedList<Star>();
     
-    for(int i = 0; i < 100; i++) {
+    for(int i = 0; i < 300; i++) {
       m_stars.add(new Star());
     }
   }
@@ -41,12 +41,12 @@ class Star extends Pattern {
     
     // Make a list of the lowest edges
     float lowestY = Float.MAX_VALUE;
-    for(Edge e : edges) {
+    for(Edge e : g_edges) {
       lowestY = min(e.getCentroid().y, lowestY);
     }
     
     m_lowestEdges = new LinkedList<Edge>();
-    for(Edge e : edges) {
+    for(Edge e : g_edges) {
       if(e.getCentroid().y < lowestY + .1) {
         m_lowestEdges.add(e);
       }
@@ -58,13 +58,20 @@ class Star extends Pattern {
   
   void reset() {
     m_length = 1;
-    m_color = color(0,255,255);
+    m_color = color(255,255,255);
     
     // starting position
     m_edge = m_lowestEdges.get(int(random(0,m_lowestEdges.size())));
-    m_position = 0;
-    m_speed = random(0.5,1.5);
-    m_direction = true;
+    m_speed = random(0.4,1.7);
+    
+    if(random(0,1) > .5) {
+      m_position = 0;
+      m_direction = true;
+    }
+    else {
+      m_position = m_edge.m_length -1;
+      m_direction = false;
+    }
   }
   
   void paint(PGraphics f) {
@@ -90,12 +97,12 @@ class Star extends Pattern {
       }
 
       // Pick a new edge to jump to
-      List<Edge> jumpEdges = nodes.get(exitNode).getConnectedEdges();
+      List<Edge> jumpEdges = g_nodes.get(exitNode).getConnectedEdges();
   
       // Filter out any edges that are lower than this one
       float oldY = m_edge.getCentroid().y;
       for (int i = jumpEdges.size() - 1; i >= 0; --i) {
-        if (jumpEdges.get(i).getCentroid().y <= oldY + .3) {  // Note: Tweak this to be ~1/2 edge length
+        if (jumpEdges.get(i).getCentroid().y <= oldY + .1) {
           jumpEdges.remove(i);
         }
       }
