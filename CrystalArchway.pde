@@ -5,7 +5,6 @@ import peasy.org.apache.commons.math.*;
 import peasy.*;
 import peasy.org.apache.commons.math.geometry.*;
 
-import processing.opengl.*;
 import hypermedia.net.*;
 import java.util.concurrent.*;
 
@@ -75,7 +74,7 @@ void setup() {
   perspective(fov, float(width)/float(height), 
   cameraZ/1000.0, cameraZ*10.0);
 
-  g_frame = createGraphics(displayWidth, displayHeight, P3D);
+  g_frame = createGraphics(displayWidth, displayHeight);
   // Writing to the depth buffer is disabled to avoid rendering
   // artifacts due to the fact that the particles are semi-transparent
   // but not z-sorted.
